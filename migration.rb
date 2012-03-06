@@ -1,5 +1,5 @@
 $: << File.dirname(__FILE__)
-require 'database'
+require 'auth'
 
 #ActiveRecord::Migrator.run(:down, "db/migrate/", 005)
 
