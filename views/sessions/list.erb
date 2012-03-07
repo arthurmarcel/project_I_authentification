@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login OK</title>
+</head>
+<body>
+
+<h1>Login OK</h1>
+
+<p><%= login %></p>
+
+<%
+	if not login == ""
+		#u = User.find_by_login(login)
+		#a = Application.find_by_user_id(u.id)
+		#l = "Listes des applications"
+	end
+%>
+
+
+
+</body>
+</html>
+

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Registration page</title>
+</head>
+<body>
+
+<h1>New user</h1>
+
+<p><%=error%></p>
+
+<form action="/sauth/conf_register" method="post">
+  <div class="field">
+    <label for="login">Login</label><br />
+
+    <input id="login" name="login" size="20" type="text" />
+  </div>
+  
+  <div class="field">
+    <label for="password">Password</label><br />
+    <input id="password" name="password" size="30" type="password" />
+  </div>
+  
+  <div class="field">
+    <label for="password_confirmation">Password confirmation</label><br />
+    <input id="password_confirmation" name="password_confirmation" size="30" type="password" />
+  </div>
+   
+  <div class="actions">
+    <input name="commit" type="submit" value="Create user account" />
+  </div>
+</form>
+
+</body>
+</html>
+

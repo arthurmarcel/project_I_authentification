@@ -58,6 +58,7 @@ describe Application do
 		
 		it "should not be valid with a wrong user_id" do
 			subject.valid?.should be_false
+			puts "\nerror user_id : #{subject.errors.messages[:user_id].inspect}"
 			subject.errors.messages[:user_id].include?("is invalid").should be_true
 		end
 	end

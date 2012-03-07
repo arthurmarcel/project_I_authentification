@@ -25,9 +25,10 @@ class User < ActiveRecord::Base
 	######################################
 
 	# Accessors
-	def password
-		@password
-	end
+	#def password
+		#self[:password]
+		#@password
+	#end
 	
 	def password_confirmation
 		@password_confirmation
@@ -35,15 +36,25 @@ class User < ActiveRecord::Base
 	
 	# Encrypt passwords
 	def password=(password)
-		unless password.nil?
-			@password = Digest::SHA1.hexdigest(password)
+		if !password.nil? && !password.empty?
+			@password = User.encode_pass(password)
+			self[:password] = User.encode_pass(password)
 		end
 	end
 
 	def password_confirmation=(password)
-		unless password.nil?
-			@password_confirmation = Digest::SHA1.hexdigest(password)
+		if !password.nil? && !password.empty?
+			@password_confirmation = User.encode_pass(password)
 		end
 	end
-
+	
+	def self.encode_pass(password)
+		Digest::SHA1.hexdigest(password).inspect[1,40]
+	end
+	
+	def self.check_auth(login, password)
+		User u = find_by_login(login)
+		return (not u.nil?) && (u.password == User.encode_pass(password))
+	end
+	
 end

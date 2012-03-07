@@ -57,12 +57,14 @@ describe User do
 
 		it "should encrypt the password with sha1" do
 			Digest::SHA1.should_receive(:hexdigest).with("password").and_return("5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8")
+			Digest::SHA1.should_receive(:hexdigest).with("password").and_return("5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8")
 			subject.password = "password"
+			subject.password.should == "5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8"
 		end
 
 		it "should have stored the encrypted password" do
 			subject.password = "password"
-			subject.password.should == "5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8"
+			subject.password.should == User.encode_pass("password")
 		end
 
 		it "should not be valid with a different password_confirmation" do
