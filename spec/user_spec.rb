@@ -19,11 +19,6 @@ describe User do
 			subject.valid?.should be_false
 			subject.errors.messages[:password].include?("can't be blank").should be_true
 		end
-
-		it "should not be valid without password confirmation" do
-			subject.valid?.should be_false
-			subject.errors.messages[:password_confirmation].include?("can't be blank").should be_true
-		end
 	end
 	
 
@@ -66,18 +61,6 @@ describe User do
 			subject.password = "password"
 			subject.password.should == User.encode_pass("password")
 		end
-
-		it "should not be valid with a different password_confirmation" do
-			subject.password = "password"
-			subject.password_confirmation = "other"
-			subject.valid?.should be_false
-		end
-
-		it "should be valid with the same password_confirmation" do
-			subject.password = "password"
-			subject.password_confirmation = "password"
-			subject.valid?.should be_true
-		end
 	end
 
 
@@ -86,7 +69,6 @@ describe User do
 			u = User.new
 			u.login = "login"
 			u.password = "password"
-			u.password_confirmation = "password"
 			u
 		end
 

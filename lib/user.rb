@@ -17,8 +17,8 @@ class User < ActiveRecord::Base
 
 	# Password
 	validates :password, :presence => true
-	validates :password_confirmation, :presence => true
-	validates :password, :confirmation => true
+	#validates :password_confirmation, :presence => true
+	#validates :password, :confirmation => true
 
 	######################################
 	# Class definition
@@ -30,9 +30,9 @@ class User < ActiveRecord::Base
 		#@password
 	#end
 	
-	def password_confirmation
-		@password_confirmation
-	end
+	#def password_confirmation
+		#@password_confirmation
+	#end
 	
 	# Encrypt passwords
 	def password=(password)
@@ -42,11 +42,11 @@ class User < ActiveRecord::Base
 		end
 	end
 
-	def password_confirmation=(password)
-		if !password.nil? && !password.empty?
-			@password_confirmation = User.encode_pass(password)
-		end
-	end
+	#def password_confirmation=(password)
+		#if !password.nil? && !password.empty?
+			#@password_confirmation = User.encode_pass(password)
+		#end
+	#end
 	
 	def self.encode_pass(password)
 		Digest::SHA1.hexdigest(password).inspect[1,40]
