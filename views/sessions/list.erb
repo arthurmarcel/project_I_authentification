@@ -11,11 +11,28 @@
 	apps = Application.where(:user_id => u.id)
 	if !apps.empty?
 %>
-	<div class="listapp">
-		<p>List of applications using your account:</p>
+	<div class="listappown">
+		<p>List of applications you own:</p>
 		<ul>
 			<% apps.each do |a| %>
 				<li><%=a.name%> (<%=a.url%>)</li>
+			<% end %>
+		</ul>
+	</div>
+	
+<%else%>
+	<p>You have created no application.</p>
+<%end%>
+
+<% uses = Use.where(:user_id => u.id)
+	if !uses.empty?
+%>
+	<div class="listappuse">
+		<p>List of applications using your account:</p>
+		<ul>
+			<% uses.each do |use| %>
+			<% app = Application.where(:id => use.application_id) %>
+				<li><%=app.name%> (<%=app.url%>)</li>
 			<% end %>
 		</ul>
 	</div>

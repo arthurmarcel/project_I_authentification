@@ -4,9 +4,11 @@
   <title>Welcome !</title>
 </head>
 <body>
-
-	<h1>Welcome <%= user%></h1>
-	<p><a href="/sessions/quit">Disconnect</a></p>
+	<div class="protected">
+		<h1>Welcome <%= user%></h1>
+		<p>You are in the protected area</p>
+		<p><a href="/sessions/quit">Disconnect</a></p>
+	</div>
 </body>
 </html>
 
