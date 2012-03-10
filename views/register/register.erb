@@ -10,7 +10,7 @@
 	<% if @errors.nil? %>
 		<p>Please complete the different fields</p>
 	<% else %>
-		<p>Erreur lors de l'inscription, veuillez vérifier vos informations.</p>
+		<p>Register failed for the next reasons :</p>
 		<ul>
 			<% @errors.each do |field, errs| %>
 				<li><%= field %> <%= errs.join('and ') %></li>

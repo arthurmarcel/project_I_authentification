@@ -55,7 +55,8 @@ end
 get '/sauth/sessions' do
 	if session["current_user"]
 		#puts "session user : #{session["current_user"]}"
-		erb :"sessions/list", :locals => {:login=>session["current_user"]}
+		@login = session["current_user"]
+		erb :"sessions/list"
 	else
 		redirect '/sauth/sessions/new'
 	end
