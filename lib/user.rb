@@ -36,7 +36,7 @@ class User < ActiveRecord::Base
 	
 	# Encrypt passwords
 	def password=(password)
-		if !password.nil? && !password.empty?
+		if !password.nil? && !password.empty? && password=~/^[a-z0-9]{4,20}$/i
 			@password = User.encode_pass(password)
 			self[:password] = User.encode_pass(password)
 		end
@@ -56,5 +56,5 @@ class User < ActiveRecord::Base
 		User u = find_by_login(login)
 		return (not u.nil?) && (u.password == User.encode_pass(password))
 	end
-	
+
 end

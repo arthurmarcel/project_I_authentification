@@ -18,8 +18,7 @@ describe "accessing the registration page" do
 	it "should reload the page with wrong parameters (login already exists)" do
 		params = {'login' => "toto", 'password' => "tata", "password_confirmation"=>"tata"}
 		post '/sauth/conf_register', params
-		last_response.status.should == 302
-		last_response.headers["Location"].should == "http://example.org/sauth/register?error=err03"
+		last_response.status.should == 200
 	end
 	
 	it "should redirect to a confirmation page" do
@@ -52,8 +51,7 @@ describe "accessing the connection page" do
   it "should reload the page with wrong params" do 
 		params = {'login' => "tutu", 'password' => "tata"}
     post '/sauth/sessions', params
-    last_response.status.should == 302
-    last_response.headers["Location"].should == "http://example.org/sauth/sessions/new?error=err01"
+    last_response.status.should == 200
   end
 end
 

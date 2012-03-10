@@ -17,23 +17,10 @@ ActiveRecord::Base.establish_connection(configuration)
 enable :sessions
 
 get '/sauth/register' do
-	if params["error"] && params["error"] == "err01"
-		erb :"register/register", :locals => {:error=>"Error: password and password confirmation are not the same"}
-	elsif params["error"] && params["error"] == "err02"
-		erb :"register/register", :locals => {:error=>"Error: login field can't be blank"}
-	elsif params["error"] && params["error"] == "err03"
-		erb :"register/register", :locals => {:error=>"Error: login has already been taken"}
-	elsif params["error"] && params["error"] == "err04"
-		erb :"register/register", :locals => {:error=>"Error: unknown error on login"}
-	elsif params["error"] && params["error"] == "err05"
-		erb :"register/register", :locals => {:error=>"Error: password field can't be blank"}
-	elsif params["error"] && params["error"] == "err06"
-		erb :"register/register", :locals => {:error=>"Error: unknown error on password"}
-	elsif params["error"] && params["error"] == "err07"
-		erb :"register/register", :locals => {:error=>"Error: login is not an alphanumeric string between 4 to 20 characters)"}
-	else
-		erb :"register/register", :locals => {:error=>""}
-	end
+	@login = ""
+	@password = ""
+	@errors = nil
+	erb :"register/register", :locals => {:error=>""}
 end
 
 
@@ -41,33 +28,21 @@ post '/sauth/conf_register' do
 	u = User.new
 	u.login = params["login"]
 	u.password = params["password"]
-	#u.password_confirmation = params["password_confirmation"]
 	
 	if params["password"] != params["password_confirmation"]
-		redirect '/sauth/register?error=err01'
+		@errors = {:password_confirmation => ["is not the smae as password"]}
+		erb :"register/register"
 	elsif u.valid?
 		u.save
 		session["current_user"] = "#{u.login}"
 		redirect '/sauth/sessions'
 		#erb :"register/conf_register", :locals => {:user=>u.login}
-	else	
-		if u.errors.messages[:login]
-			if u.errors.messages[:login].inspect.include?("can't be blank")
-				redirect '/sauth/register?error=err02'
-			elsif u.errors.messages[:login].inspect.include?("has already been taken")
-				redirect '/sauth/register?error=err03'
-			elsif u.errors.messages[:login].inspect.include?("is invalid")
-				redirect '/sauth/register?error=err07'
-			else
-				redirect '/sauth/register?error=err04'
-			end
-		elsif u.errors.messages[:password]
-			if u.errors.messages[:password].inspect.include?("can't be blank")
-				redirect '/sauth/register?error=err05'
-			else
-				redirect '/sauth/register?error=err06'
-			end
+	else
+		@errors = u.errors.messages
+		if u.errors.messages[:password] && u.errors.messages[:password].include?("can't be blank")
+			u.errors.messages[:password].push("must be an alphanumeric string between 4 and 20 characters")
 		end
+		erb :"register/register"
 	end
 end
 
@@ -88,11 +63,7 @@ end
 
 
 get '/sauth/sessions/new' do
-	if params["error"] && params["error"] == "err01"
-		erb :"sessions/new", :locals => {:error=>"Error: user not found or bad password"}
-	else
-		erb :"sessions/new", :locals => {:error=>""}
-	end
+	erb :"sessions/new", :locals => {:error=>""}
 end
 
 
@@ -103,7 +74,7 @@ post '/sauth/sessions' do
 		session["current_user"] = "#{u.login}"
 		redirect '/sauth/sessions'
 	else
-		redirect '/sauth/sessions/new?error=err01'
+		erb :"sessions/new", :locals => {:error=>"Error: user not found or bad password"}
 	end
 end
 

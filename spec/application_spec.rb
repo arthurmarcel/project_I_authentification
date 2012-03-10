@@ -42,24 +42,24 @@ describe Application do
 		
 		it "should not be valid with too short name" do
 			subject.valid?.should be_false
-			subject.errors.messages[:name].include?("is invalid").should be_true
+			subject.errors.messages[:name_before_type_cast].include?("is invalid").should be_true
 		end
 		
 		it "should not be valid with a wrong name" do
 			subject.name = "test faux"
 			subject.valid?.should be_false
-			subject.errors.messages[:name].include?("is invalid").should be_true
+			subject.errors.messages[:name_before_type_cast].include?("is invalid").should be_true
 		end
 		
 		it "should not be valid with a wrong url" do
 			subject.valid?.should be_false
-			subject.errors.messages[:url].include?("is invalid").should be_true
+			subject.errors.messages[:url_before_type_cast].include?("is invalid").should be_true
 		end
 		
 		it "should not be valid with a wrong user_id" do
 			subject.valid?.should be_false
-			puts "\nerror user_id : #{subject.errors.messages[:user_id].inspect}"
-			subject.errors.messages[:user_id].include?("is invalid").should be_true
+			#puts "\nerror user_id : #{subject.errors.messages[:user_id].inspect}"
+			subject.errors.messages[:user_id_before_type_cast].include?("is invalid").should be_true
 		end
 	end
 	
