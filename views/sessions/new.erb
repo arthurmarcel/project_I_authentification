@@ -7,7 +7,7 @@
 
 <h1>Log in</h1>
 
-<p><%=error%></p>
+<p><%=@error%></p>
 
 <form action="/sauth/sessions" method="post">
   <div class="field">
@@ -23,6 +23,8 @@
     <input name="commit" type="submit" value="Log in" />
   </div>
 </form>
+
+<a href="/sauth/register">Register</a>
 
 </body>
 </html>

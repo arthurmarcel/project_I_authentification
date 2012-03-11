@@ -7,6 +7,10 @@
 
 <h1>Welcome <%= @login %> !</h1>
 
+<%if !@error.nil?%>
+	<p><%=@error%></p>
+<%end%>
+
 <% u = User.find_by_login(@login)
 	apps = Application.where(:user_id => u.id)
 	if !apps.empty?
@@ -15,7 +19,7 @@
 		<p>List of applications you own:</p>
 		<ul>
 			<% apps.each do |a| %>
-				<li><%=a.name%> (<%=a.url%>)</li>
+				<li><%=a.name%> (<%=a.url%>) - <a href="/sauth/deleteapp?app=<%=a.id%>">delete</a> </li>
 			<% end %>
 		</ul>
 	</div>
@@ -42,6 +46,7 @@
 <%end%>
 
 <a href="/sauth/newapp">Register a new application</a><br/>
+<a href="/sauth/delete">Delete your account</a><br/>
 <a href="/sauth/sessions/disconnect">Disconnect</a>
 
 </body>
