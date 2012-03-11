@@ -76,6 +76,33 @@ describe "deconnecting" do
 end
 
 
+describe "creating an application" do
+	it "should not access the page if not logged (redirect to login page)" do
+		get '/sauth/newapp'
+		last_response.status.should == 302
+		last_response.headers["Location"].should == "http://example.org/sauth/sessions/new"
+	end
+	
+	it "should access the page if logged" do
+		subject.session['current_user'] = "toto"
+		get '/sauth/newapp'
+		last_response.status.should == 200
+		last_response.body.should match %r{<form.*action="/sauth/conf_newapp".*method="post".*}
+	end
+	
+	it "should be OK with good parameters" do
+		params = {'name' => "app3", 'url' => "http://app3.fr"}
+		post '/sauth/conf_newapp', params
+		last_response.status.should == 200
+		Application.should_receive(:create).with("app3", "http://app3.fr")
+	end
+	
+	#it "should be KO with wrong parameters (reload form)" do
+	
+	#end
+end
+
+
 describe "accessing the protected area of an application" do
   describe "without basic authentication and session" do
     it "should redirect to login form" do 

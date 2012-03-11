@@ -4,6 +4,8 @@ require_relative 'lib/application'
 require_relative 'lib/use'
 require 'sinatra'
 
+#set :show_exceptions, false
+
 config_file = File.join(File.dirname(__FILE__),"config","database.yml")
 
 puts YAML.load(File.open(config_file)).inspect

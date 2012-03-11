@@ -31,7 +31,7 @@
 		<p>List of applications using your account:</p>
 		<ul>
 			<% uses.each do |use| %>
-			<% app = Application.where(:id => use.application_id) %>
+			<% app = Application.find_by_id(use.application_id) %>
 				<li><%=app.name%> (<%=app.url%>)</li>
 			<% end %>
 		</ul>
@@ -41,6 +41,7 @@
 	<p>No application uses your account.</p>
 <%end%>
 
+<a href="/sauth/newapp">Register a new application</a><br/>
 <a href="/sauth/sessions/disconnect">Disconnect</a>
 
 </body>
