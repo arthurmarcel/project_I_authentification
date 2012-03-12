@@ -4,6 +4,7 @@ require_relative 'lib/application'
 require_relative 'lib/use'
 require 'sinatra'
 require_relative 'env/env'
+require "base64"
 
 config_file = File.join(File.dirname(__FILE__),"config","database.yml")
 
@@ -42,6 +43,7 @@ get '/app1.fr/protected' do
 	elsif !params["secret"].nil?
 		secret = params["secret"]
 		key = OpenSSL::PKey::RSA.new File.read 'priv_keys/app1_priv.pem'
+		encoded = Base64.urlsafe_decode64(encoded)
 		@user = key.private_decrypt params["secret"]
 		session["current_user_app1"] = @user
 		erb :"client/protected"

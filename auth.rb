@@ -83,7 +83,8 @@ get '/sauth/sessions/new' do
 			url = a.url
 			key = OpenSSL::PKey::RSA.new("#{a.pubkey}")
 			public_encrypted = key.public_encrypt "#{session["current_user"]}"
-			redirect "#{a.url}/#{params["origin"]}?secret=#{public_encrypted}"
+			encoded = Base64.urlsafe_encode64(public_encrypted)
+			redirect "#{a.url}/#{params["origin"]}?secret=#{encoded}"
 		else
 			redirect '/sauth/sessions'
 		end
@@ -99,9 +100,11 @@ post '/sauth/sessions' do
 		if !params["app"].nil? && !params["origin"].nil?
 			a = Application.find_by_name("#{params["app"]}")
 			url = a.url
+			puts "URL : #{url}"
 			key = OpenSSL::PKey::RSA.new("#{a.pubkey}")
 			public_encrypted = key.public_encrypt "#{session["current_user"]}"
-			redirect "#{a.url}/#{params["origin"]}?secret=#{public_encrypted}"
+			encoded = Base64.urlsafe_encode64(public_encrypted)
+			redirect "#{url}/#{params["origin"]}?secret=#{encoded}"
 		else
 			redirect '/sauth/sessions'
 		end
