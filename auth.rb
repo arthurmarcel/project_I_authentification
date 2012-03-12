@@ -66,7 +66,21 @@ end
 
 
 get '/sauth/sessions/new' do
-	erb :"sessions/new", :locals => {:error=>""}
+	if session["current_user"].nil?
+		if !params["app"].nil?
+			@app = params["app"]
+			@error = "Please log in sauth to access #{params["app"]}"
+		else
+			@error = ""
+		end
+		erb :"sessions/new"
+	else
+		if !params["app"].nil?
+			redirect "#{params["app"]}?secret=#{session["current_user"]}"
+		else
+			redirect '/sauth/sessions'
+		end
+	end
 end
 
 
@@ -75,7 +89,11 @@ post '/sauth/sessions' do
 	
 	if u && (u.password == User.encode_pass(params["password"]))
 		session["current_user"] = "#{u.login}"
-		redirect '/sauth/sessions'
+		if !params["app"].nil?
+			redirect "#{params["app"]}?secret=#{u.login}"
+		else
+			redirect '/sauth/sessions'
+		end
 	else
 		@error = "Error: user not found or bad password"
 		erb :"sessions/new"

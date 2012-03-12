@@ -50,7 +50,7 @@ describe "accessing the connection page" do
     last_response.headers["Location"].should == "http://example.org/sauth/sessions"
     follow_redirect!
     last_response.body.should match %r{<div.*class="listappuse".*}
-        last_response.body.should match %r{<div.*class="listappown".*}
+    last_response.body.should match %r{<div.*class="listappown".*}
   end
   
   it "should reload the page with wrong params" do 
