@@ -40,10 +40,12 @@ get '/app1.fr/protected' do
 		@user = get_env.session["current_user_app1"]
 		erb :"client/protected"
 	elsif !params["secret"].nil?
-		@user = params["secret"]
-		session["current_user_app1"] = params["secret"]
+		secret = params["secret"]
+		key = OpenSSL::PKey::RSA.new File.read 'priv_keys/app1_priv.pem'
+		@user = key.private_decrypt params["secret"]
+		session["current_user_app1"] = @user
 		erb :"client/protected"
 	else
-		redirect 'http://localhost:4567/sauth/sessions/new?app=http://localhost:5678/app1.fr/protected'
+		redirect 'http://localhost:4567/sauth/sessions/new?app=app1&origin=protected'
 	end
 end

@@ -22,6 +22,10 @@ class Application < ActiveRecord::Base
 	# Owner
 	validates :user_id, :presence => true
 	validates :user_id_before_type_cast, :format => { :with => /^[0-9]+$/, :on => :create }
+	
+	# Public key
+	validates :pubkey, :presence => true
+	#validates :pubkey_before_type_cast, :format => { :with => /^-----BEGIN PUBLIC KEY-----.+-----END PUBLIC KEY-----$/i, :on => :create }
 
 	######################################
 	# Class definition

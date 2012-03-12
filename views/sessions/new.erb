@@ -23,6 +23,10 @@
   <% if !@app.nil? %>
  	 <input id="app" name="app" value="<%=@app%>" size="30" type="HIDDEN" />
 	<% end %> 	
+	
+	<% if !@origin.nil? %>
+ 	 <input id="origin" name="origin" value="<%=@origin%>" size="50" type="HIDDEN" />
+	<% end %> 	
   
   <div class="actions">
     <input name="commit" type="submit" value="Log in" />

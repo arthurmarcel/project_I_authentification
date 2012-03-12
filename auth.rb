@@ -3,6 +3,8 @@ require_relative 'lib/user'
 require_relative 'lib/application'
 require_relative 'lib/use'
 require 'sinatra'
+require 'openssl'
+require "base64"
 
 #set :show_exceptions, false
 
@@ -67,16 +69,21 @@ end
 
 get '/sauth/sessions/new' do
 	if session["current_user"].nil?
-		if !params["app"].nil?
+		if !params["app"].nil? && !params["origin"].nil?
 			@app = params["app"]
+			@origin = params["origin"]
 			@error = "Please log in sauth to access #{params["app"]}"
 		else
 			@error = ""
 		end
 		erb :"sessions/new"
 	else
-		if !params["app"].nil?
-			redirect "#{params["app"]}?secret=#{session["current_user"]}"
+		if !params["app"].nil? && !params["origin"].nil?
+			a = Application.find_by_name("#{params["app"]}")
+			url = a.url
+			key = OpenSSL::PKey::RSA.new("#{a.pubkey}")
+			public_encrypted = key.public_encrypt "#{session["current_user"]}"
+			redirect "#{a.url}/#{params["origin"]}?secret=#{public_encrypted}"
 		else
 			redirect '/sauth/sessions'
 		end
@@ -89,8 +96,12 @@ post '/sauth/sessions' do
 	
 	if u && (u.password == User.encode_pass(params["password"]))
 		session["current_user"] = "#{u.login}"
-		if !params["app"].nil?
-			redirect "#{params["app"]}?secret=#{u.login}"
+		if !params["app"].nil? && !params["origin"].nil?
+			a = Application.find_by_name("#{params["app"]}")
+			url = a.url
+			key = OpenSSL::PKey::RSA.new("#{a.pubkey}")
+			public_encrypted = key.public_encrypt "#{session["current_user"]}"
+			redirect "#{a.url}/#{params["origin"]}?secret=#{public_encrypted}"
 		else
 			redirect '/sauth/sessions'
 		end
@@ -121,6 +132,8 @@ post '/sauth/conf_newapp' do
 		app = Application.new
 		app.name = params["name"]
 		app.url = params["url"]
+		app.pubkey = params["pubkey"]
+		puts "PUB : #{app.pubkey_before_type_cast}"
 		app.user_id = User.find_by_login(session["current_user"]).id
 	
 		if app.valid?
@@ -151,6 +164,7 @@ get "/sauth/deleteapp" do
 					u.delete
 					u.save
 				end
+				
 				app.delete
 				app.save
 				erb :"sessions/list" 
