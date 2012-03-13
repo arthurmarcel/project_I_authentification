@@ -50,11 +50,6 @@ post '/sauth/conf_register' do
 end
 
 
-get '/appli_cliente1/protected' do
-	redirect '/sauth/sessions/new'
-end
-
-
 get '/sauth/sessions' do
 	session["delte_confirm"] = nil
 	if session["current_user"]
@@ -72,16 +67,14 @@ get '/sauth/sessions/new' do
 		if !params["app"].nil? && !params["origin"].nil?
 			@app = params["app"]
 			@origin = params["origin"]
-			@error = "Please log in sauth to access #{params["app"]}"
-		else
-			@error = ""
+			@msg = "Please log in sauth to access #{params["app"]}"
 		end
 		erb :"sessions/new"
 	else
 		if !params["app"].nil? && !params["origin"].nil?
 			a = Application.find_by_name("#{params["app"]}")
 			url = a.url
-			key = OpenSSL::PKey::RSA.new("#{a.pubkey}")
+			key = OpenSSL::PKey::RSA.new(a.pubkey)
 			public_encrypted = key.public_encrypt "#{session["current_user"]}"
 			encoded = Base64.urlsafe_encode64(public_encrypted)
 			redirect "#{a.url}/#{params["origin"]}?secret=#{encoded}"
@@ -109,7 +102,12 @@ post '/sauth/sessions' do
 			redirect '/sauth/sessions'
 		end
 	else
-		@error = "Error: user not found or bad password"
+		if u
+			@login = u.login
+			@msg = "Error: bad password"
+		elsif
+			@msg = "Error: user not found"
+		end
 		erb :"sessions/new"
 	end
 end
@@ -136,7 +134,7 @@ post '/sauth/conf_newapp' do
 		app.name = params["name"]
 		app.url = params["url"]
 		app.pubkey = params["pubkey"]
-		puts "PUB : #{app.pubkey_before_type_cast}"
+		#puts "PUB : #{app.pubkey_before_type_cast}"
 		app.user_id = User.find_by_login(session["current_user"]).id
 	
 		if app.valid?
@@ -144,6 +142,19 @@ post '/sauth/conf_newapp' do
 			redirect '/sauth/sessions'
 		else
 			@errors = app.errors.messages
+			
+			if app.errors.messages[:name]
+				@name = params["name"]
+			end
+			
+			if app.errors.messages[:url]
+				@url = params["url"]
+			end
+			
+			if app.errors.messages[:pubkey]
+				@pubkey = params["pubkey"]
+			end
+			
 			erb :"register/newapp"
 		end
 	else
@@ -205,14 +216,13 @@ get '/sauth/delete' do
 			session["current_user"] = nil
 			session["delte_confirm"] = nil
 			
-			@error = "Account successuly deleted !"
+			@msg = "Account successuly deleted !"
 			erb :"sessions/new"
 		else
 			session["delte_confirm"] = "OK"
 			erb :"register/delete_account"
 		end
 	else
-		@error = ""
 		erb :"sessions/new"
 	end
 end

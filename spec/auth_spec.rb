@@ -107,7 +107,7 @@ describe "creating an application" do
 	end
 	
 	it "should be OK with good parameters" do
-		params = {'name' => "app3", 'url' => "http://app3.fr"}
+		params = {'name' => "app3", 'url' => "http://app3.fr", 'pubkey' => "000000"}
 		post '/sauth/conf_newapp', params
 		#Application.should_receive(:save)
 		last_response.status.should == 302
@@ -129,9 +129,9 @@ end
 
 describe "unregistering an application" do
 	it "should not accept to delete the application" do
-		a = Application.find_by_name("app2")
+		b = Application.find_by_name("app1")
 		
-		get "/sauth/deleteapp?app=#{a.id}"
+		get "/sauth/deleteapp?app=#{b.id}"
 		last_response.status.should == 302
 		last_response.headers["Location"].should == "http://example.org/sauth/sessions/new"
 	end
@@ -142,25 +142,29 @@ describe "unregistering an application" do
 		last_request.env['rack.session']['current_user'].should == 'toto'
 		follow_redirect!
 		
-		a = Application.find_by_name("app2")
-		
-		get "/sauth/deleteapp?app=#{a.id}"
+		c = Application.find_by_name("app1")
+		get "/sauth/deleteapp?app=#{c.id}"
 		last_response.status.should == 200
-		b = Application.new
-		b.name = "app2"
-		b.url = "http://app2.fr"
-		b.user_id = 1
-		b.save
+		
+		d = Application.new
+		d.name = "app1"
+		d.url = "http://localhost:5678/app1.fr"
+		d.user_id = 1
+		d.pubkey=
+		"-----BEGIN PUBLIC KEY-----
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwKVLF2uinWguoYUZLIVd
+5C1reIlLte8clvp1KpnCgGX1vYNZ4wN5tRCUN7FcJ/p4TR+xLI9GJX88lhWQNObZ
+2Goo5QhvCezg1IMa7M3poCFlS3BisMvHEZtoYRHIM4ayloaStx1DT5Y8/1IyaioW
+aD9tjl1AYnzbExWDEjYQwkPgjOwZkUdebxXqKYXRIrmB6PJ4JStxLpvo/Jlrf5ks
+8OOmsYXYDy4SHsNmzquPmU3o6nfHYXBBfBlZkIEF6CEku+7VQRfcwaoyxU41CUJ6
+fw6o0cwpYN8x7k0k3VMxmFRGh8zqXhRuTvArPvtASGzio3dxBpfMt9vO8iVQ1U17
+jQIDAQAB
+-----END PUBLIC KEY-----"
+		d.save
+		
+		us = Use.new
+		us.user_id = User.find_by_login("toto")
+		us.application_id = d.id
+		us.save
 	end
-end
-
-
-describe "accessing the protected area of an application" do
-  describe "without basic authentication and session" do
-    it "should redirect to login form" do 
-      get '/appli_cliente1/protected'
-      follow_redirect!
-      last_request.path.should == '/sauth/sessions/new'
-    end
-  end
 end

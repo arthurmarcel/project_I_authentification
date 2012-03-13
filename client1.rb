@@ -41,13 +41,19 @@ get '/app1.fr/protected' do
 		@user = get_env.session["current_user_app1"]
 		erb :"client/protected"
 	elsif !params["secret"].nil?
-		secret = params["secret"]
-		key = OpenSSL::PKey::RSA.new File.read 'priv_keys/app1_priv.pem'
-		encoded = Base64.urlsafe_decode64(encoded)
-		@user = key.private_decrypt params["secret"]
-		session["current_user_app1"] = @user
-		erb :"client/protected"
+		if session["timer"] && Time.now.to_i - session["timer"] < 15
+			secret = params["secret"]
+			key = OpenSSL::PKey::RSA.new File.read 'priv_keys/app1_priv.pem'
+			encoded = Base64.urlsafe_decode64(secret)
+			@user = key.private_decrypt encoded
+			session["current_user_app1"] = @user
+			erb :"client/protected"
+		else
+			@user = "fail"
+			erb :"client/protected"
+		end
 	else
+		session["timer"] = Time.now.to_i
 		redirect 'http://localhost:4567/sauth/sessions/new?app=app1&origin=protected'
 	end
 end

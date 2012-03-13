@@ -17,7 +17,7 @@ class Application < ActiveRecord::Base
 	# URL
 	validates :url, :presence => true
 	validates :url, :uniqueness => true
-	validates :url_before_type_cast, :format => { :with => /^https?:\/\/[a-z0-9._\/-]+\.[a-z]{2,3}/i, :on => :create }
+	validates :url_before_type_cast, :format => { :with => /^https?:\/\/[a-z0-9._\/-:]+\.[a-z]{2,3}/i, :on => :create }
 		
 	# Owner
 	validates :user_id, :presence => true
