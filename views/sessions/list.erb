@@ -16,7 +16,7 @@
 		<p>List of applications you own:</p>
 		<ul>
 			<% @apps_own.each do |ao| %>
-				<li><%=ao.name%> (<%=ao.url%>) - <a href="/sauth/deleteapp?app=<%=ao.id%>">(delete)</a> </li>
+				<li><%=ao.name%> (<%=ao.url%>)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="/sauth/deleteapp?app=<%=ao.id%>">Delete</a></li>
 			<% end %>
 		</ul>
 	</div>
@@ -29,7 +29,7 @@
 		<p>List of applications using your account:</p>
 		<ul>
 			<% @apps_linked.each do |al| %>
-				<li><%=al.name%> (<%=al.url%>) - <a href="/sauth/deleteuse?a=<%=al.id%>">(delete)</a> </li>
+				<li><%=al.name%> (<%=al.url%>)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="/sauth/deleteuse?a=<%=al.id%>">Delete</a></li>
 			<% end %>
 		</ul>
 	</div>
