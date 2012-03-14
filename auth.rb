@@ -65,6 +65,16 @@ get '/sauth/sessions' do
 	if session["current_user"]
 		#puts "session user : #{session["current_user"]}"
 		@login = session["current_user"]
+		
+		u = User.find_by_login(@login)
+		@apps_own = Application.where(:user_id => u.id)
+		
+		uses = Use.where(:user_id => u.id)
+		@apps_linked = []
+		uses.each do |use|
+			@apps_linked.push(Application.find_by_id(use.application_id))
+		end
+		
 		erb :"sessions/list"
 	else
 		redirect '/sauth/sessions/new'
@@ -208,27 +218,32 @@ end
 get "/sauth/deleteapp" do
 	if session["current_user"]
 		@login = session["current_user"]
+		u = User.find_by_login(@login)
 		app = Application.find_by_id(params["app"])
-		user = User.find_by_login(session["current_user"])
-		if !app.nil?
-			if app.user_id != user.id
-				@error = "Error: This application is not yours"
-				erb :"sessions/list"
-			else
+		if !app.nil?			
+			if app.user_id == u.id
 				uses = Use.where(:application_id => app.id)
-				uses.each do |u|
-					u.delete
-					u.save
+				uses.each do |use|
+					use.delete
+					use.save
 				end
-				
 				app.delete
 				app.save
-				erb :"sessions/list" 
+			else
+				@error = "Error: This application is not yours"
 			end
 		else
 			@error = "Error: This application doesn't exist"
-			erb :"sessions/list"
 		end
+		
+		@apps_own = Application.where(:user_id => u.id)		
+		uses = Use.where(:user_id => u.id)
+		@apps_linked = []
+		uses.each do |use|
+			@apps_linked.push(Application.find_by_id(use.application_id))
+		end
+		
+		erb :"sessions/list"
 	else
 		redirect 'sauth/sessions/new'
 	end

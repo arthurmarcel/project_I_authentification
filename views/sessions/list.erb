@@ -11,36 +11,28 @@
 	<p><%=@error%></p>
 <%end%>
 
-<% u = User.find_by_login(@login)
-	apps = Application.where(:user_id => u.id)
-	if !apps.empty?
-%>
+<% if @apps_own && !@apps_own.empty? %>
 	<div class="listappown">
 		<p>List of applications you own:</p>
 		<ul>
-			<% apps.each do |a| %>
-				<li><%=a.name%> (<%=a.url%>) - <a href="/sauth/deleteapp?app=<%=a.id%>">delete</a> </li>
+			<% @apps_own.each do |ao| %>
+				<li><%=ao.name%> (<%=ao.url%>) - <a href="/sauth/deleteapp?app=<%=ao.id%>">(delete)</a> </li>
 			<% end %>
 		</ul>
 	</div>
-	
 <%else%>
 	<p>You have created no application.</p>
 <%end%>
 
-<% uses = Use.where(:user_id => u.id)
-	if !uses.empty?
-%>
+<% if @apps_linked && !@apps_linked.empty? %>
 	<div class="listappuse">
 		<p>List of applications using your account:</p>
 		<ul>
-			<% uses.each do |use| %>
-			<% app = Application.find_by_id(use.application_id) %>
-				<li><%=app.name%> (<%=app.url%>)</li>
+			<% @apps_linked.each do |al| %>
+				<li><%=al.name%> (<%=al.url%>) - <a href="/sauth/deleteuse?a=<%=al.id%>">(delete)</a> </li>
 			<% end %>
 		</ul>
 	</div>
-	
 <%else%>
 	<p>No application uses your account.</p>
 <%end%>
