@@ -37,20 +37,21 @@ end
 
 
 get '/app1.fr/protected' do
-	if !get_env.session["current_user_app1"].nil?
+	if get_env.session["current_user_app1"]
 		@user = get_env.session["current_user_app1"]
 		erb :"client/protected"
 	elsif !params["secret"].nil?
-		if session["timer"] && Time.now.to_i - session["timer"] < 15
+		if !session["timer"].nil? && (Time.now.to_i - session["timer"]) < 15
+			puts "timer : #{session["timer"]}"
 			secret = params["secret"]
 			key = OpenSSL::PKey::RSA.new File.read 'priv_keys/app1_priv.pem'
 			encoded = Base64.urlsafe_decode64(secret)
 			@user = key.private_decrypt encoded
 			session["current_user_app1"] = @user
+			session["timer"] = nil
 			erb :"client/protected"
 		else
-			@user = "fail"
-			erb :"client/protected"
+			erb :"client/protected_failed"
 		end
 	else
 		session["timer"] = Time.now.to_i

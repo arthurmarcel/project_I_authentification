@@ -1,6 +1,7 @@
 - Base de dev
 - Css
 - Authentification Sauth => vérifier url
-- Synthétiser et déplcaer le code propre aux lib
+- Synthétiser et déplacer le code propre aux lib
 - Possibilité de modifier un utilisateur ou une application
-- Compte root
+- Gérer le timer d'authentification pour qu'il soit différent à chaque fois
+

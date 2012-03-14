@@ -40,6 +40,6 @@ describe "accessing the protected area" do
 	it "should redirect to sauth login if not logged" do
 		get '/app1.fr/protected'
 		last_response.status.should == 302
-		last_response.headers["Location"].should == "http://localhost:4567/sauth/sessions/new?app=http://localhost:5678/app1.fr/protected"
+		last_response.headers["Location"].should == "http://localhost:4567/sauth/sessions/new?app=app1&origin=protected"
 	end
 end
