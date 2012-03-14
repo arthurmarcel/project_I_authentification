@@ -15,7 +15,7 @@
 	<p>Log in failed for the next reasons :</p>
 	<ul>
 		<% @errors.each do |field, errs| %>
-			<li><%= field %> <%= errs.join('and ') %></li>
+			<li><%= field %> <%= errs.join(' and ') %></li>
 		<% end %>
 	</ul>
 <% end %>

@@ -13,7 +13,7 @@
 	<p>Application register failed for the next reasons :</p>
 	<ul>
 		<% @errors.each do |field, errs| %>
-			<li><%= field %> <%= errs.join('and ') %></li>
+			<li><%= field %> <%= errs.join(' and ') %></li>
 		<% end %>
 	</ul>
 <% end %>
@@ -32,7 +32,7 @@
   
    <div class="field">
     <label for="pubkey">Public key</label><br />
-    <textarea name="pubkey" rows=20 cols=100 ><% if @pubkey %><%= @pubkey %><% end %>"</textarea>
+    <textarea name="pubkey" rows=20 cols=100 ><% if @pubkey %><%= @pubkey %><% end %></textarea>
   </div>
   
   <div class="actions">

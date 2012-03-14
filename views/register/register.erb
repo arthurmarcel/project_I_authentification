@@ -13,7 +13,7 @@
 		<p>Register failed for the next reasons :</p>
 		<ul>
 			<% @errors.each do |field, errs| %>
-				<li><%= field %> <%= errs.join('and ') %></li>
+				<li><%= field %> <%= errs.join(' and ') %></li>
 			<% end %>
 		</ul>
 	<% end %>
@@ -24,17 +24,17 @@
   <div class="field">
     <label for="login">Login</label><br />
 
-    <input id="login" name="login" size="20" type="text"/>
+    <input id="login" name="login" size="20" type="text" value="<% if @login %><%= @login %><% end %>"/>
   </div>
   
   <div class="field">
     <label for="password">Password</label><br />
-    <input id="password" name="password" size="30" type="password"/>
+    <input id="password" name="password" size="30" type="password" value="<% if @password %><%= @password %><% end %>"/>
   </div>
   
   <div class="field">
     <label for="password_confirmation">Password confirmation</label><br />
-    <input id="password_confirmation" name="password_confirmation" size="30" type="password"/>
+    <input id="password_confirmation" name="password_confirmation" size="30" type="password" value="<% if @password_confirmation %><%= @password_confirmation %><% end %>"/>
   </div>
    
   <div class="actions">

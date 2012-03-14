@@ -57,3 +57,9 @@ get '/app1.fr/protected' do
 		redirect 'http://localhost:4567/sauth/sessions/new?app=app1&origin=protected'
 	end
 end
+
+
+get '/app1.fr/disconnect' do
+	session["current_user_app1"] = nil
+	redirect "/app1.fr"
+end

@@ -1,5 +1,4 @@
-- Recharger contenu fields
 - Base de dev
 - Css
-- Authentification Sauth => vérifier application est enregistrée
+- Authentification Sauth => vérifier url
 

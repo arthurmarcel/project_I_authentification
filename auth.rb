@@ -21,10 +21,7 @@ ActiveRecord::Base.establish_connection(configuration)
 enable :sessions
 
 get '/sauth/register' do
-	@login = ""
-	@password = ""
-	@errors = nil
-	erb :"register/register", :locals => {:error=>""}
+	erb :"register/register"
 end
 
 
@@ -33,18 +30,31 @@ post '/sauth/conf_register' do
 	u.login = params["login"]
 	u.password = params["password"]
 	
-	if params["password"] != params["password_confirmation"]
-		@errors = {:password_confirmation => ["is not the smae as password"]}
-		erb :"register/register"
-	elsif u.valid?
+	if u.valid? && params["password"] == params["password_confirmation"]
 		u.save
 		session["current_user"] = "#{u.login}"
 		redirect '/sauth/sessions'
 	else
 		@errors = u.errors.messages
-		if u.errors.messages[:password] && u.errors.messages[:password].include?("can't be blank")
-			u.errors.messages[:password].push("must be an alphanumeric string between 4 and 20 characters")
+		
+		if params["password"] != params["password_confirmation"]
+			@errors[:password_confirmation] = []
+			@errors[:password_confirmation].push("is not the same as password")
 		end
+		
+		if u.errors.messages[:password] && u.errors.messages[:password].include?("can't be blank")
+			@errors[:password].push("must be an alphanumeric string between 4 and 20 characters")
+		end
+				
+		if !@errors[:password] && !@errors[:password_confirmation]
+			@password = params["password"]
+			@password_confirmation = params["password_confirmation"]
+		end
+		
+		if !@errors[:login]
+			@login = params["login"]
+		end
+		
 		erb :"register/register"
 	end
 end
@@ -63,20 +73,34 @@ end
 
 
 get '/sauth/sessions/new' do
+	if !params["app"].nil? && !params["origin"].nil?
+		a = Application.find_by_name(params["app"])
+		if a.nil?
+			halt erb :"appsauth/app_not_registered"
+		end
+	end
+	
 	if session["current_user"].nil?
-		if !params["app"].nil? && !params["origin"].nil?
+		if a
 			@app = params["app"]
 			@origin = params["origin"]
 			@msg = "Please log in sauth to access #{params["app"]}"
 		end
 		erb :"sessions/new"
 	else
-		if !params["app"].nil? && !params["origin"].nil?
-			a = Application.find_by_name("#{params["app"]}")
+		if a
 			url = a.url
 			key = OpenSSL::PKey::RSA.new(a.pubkey)
 			public_encrypted = key.public_encrypt "#{session["current_user"]}"
 			encoded = Base64.urlsafe_encode64(public_encrypted)
+			
+			us = Use.new
+			us.user_id = User.find_by_login(session["current_user"]).id
+			us.application_id = a.id
+			if us.valid?
+				us.save
+			end
+			
 			redirect "#{a.url}/#{params["origin"]}?secret=#{encoded}"
 		else
 			redirect '/sauth/sessions'
@@ -86,26 +110,44 @@ end
 
 
 post '/sauth/sessions' do
+	if !params["app"].nil? && !params["origin"].nil?
+		a = Application.find_by_name(params["app"])
+		if a.nil?
+			halt erb :"appsauth/app_not_registered"
+		end
+	end
+	
 	u = User.find_by_login(params["login"])
 	
 	if u && (u.password == User.encode_pass(params["password"]))
 		session["current_user"] = "#{u.login}"
-		if !params["app"].nil? && !params["origin"].nil?
-			a = Application.find_by_name("#{params["app"]}")
+		if a
 			url = a.url
-			puts "URL : #{url}"
-			key = OpenSSL::PKey::RSA.new("#{a.pubkey}")
+			#puts "URL : #{url}"
+			key = OpenSSL::PKey::RSA.new(a.pubkey)
 			public_encrypted = key.public_encrypt "#{session["current_user"]}"
 			encoded = Base64.urlsafe_encode64(public_encrypted)
+			
+			us = Use.new
+			us.user_id = u.id
+			us.application_id = a.id
+			if us.valid?
+				us.save
+			end
+			
 			redirect "#{url}/#{params["origin"]}?secret=#{encoded}"
 		else
 			redirect '/sauth/sessions'
 		end
 	else
+		if a
+			@app = params["app"]
+			@origin = params["origin"]
+		end
 		if u
-			@login = u.login
+			@login = params["login"]
 			@msg = "Error: bad password"
-		elsif
+		else
 			@msg = "Error: user not found"
 		end
 		erb :"sessions/new"
@@ -143,15 +185,15 @@ post '/sauth/conf_newapp' do
 		else
 			@errors = app.errors.messages
 			
-			if app.errors.messages[:name]
+			if !app.errors.messages[:name]
 				@name = params["name"]
 			end
 			
-			if app.errors.messages[:url]
+			if !app.errors.messages[:url]
 				@url = params["url"]
 			end
 			
-			if app.errors.messages[:pubkey]
+			if !app.errors.messages[:pubkey]
 				@pubkey = params["pubkey"]
 			end
 			
