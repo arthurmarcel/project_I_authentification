@@ -128,7 +128,7 @@ end
 
 
 describe "unregistering an application" do
-	it "should not accept to delete the application" do
+	it "should not accept to delete the application without being logged" do
 		b = Application.find_by_name("app1")
 		
 		get "/sauth/deleteapp?app=#{b.id}"
@@ -166,5 +166,32 @@ jQIDAQAB
 		us.user_id = User.find_by_login("toto")
 		us.application_id = d.id
 		us.save
+	end	
+end
+
+
+describe "deleting a link to an application" do
+	it "should not accept to delete the use without being logged" do
+		a1 = Application.find_by_name("app1")
+		get "/sauth/deleteuse?a=#{a1.id}"
+		last_response.status.should == 302
+		last_response.headers["Location"].should == "http://example.org/sauth/sessions/new"
+	end
+	
+	it "should not accept to delete the use" do
+		params = {'login' => "toto", 'password' => "toto"}
+		post '/sauth/sessions', params
+		last_request.env['rack.session']['current_user'].should == 'toto'
+		follow_redirect!
+		
+		a2 = Application.find_by_name("app1")
+		get "/sauth/deleteuse?a=#{a2.id}"
+		last_response.status.should == 200
+		
+		u2 = User.find_by_login("toto")
+		use = Use.new
+		use.application_id = a2.id
+		use.user_id = u2.id
+		use.save
 	end
 end

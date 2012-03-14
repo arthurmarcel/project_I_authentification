@@ -284,3 +284,34 @@ get '/sauth/delete' do
 	end
 end
 
+
+get '/sauth/deleteuse' do
+	if session["current_user"]
+		@login = session["current_user"]
+		u = User.find_by_login(@login)
+		app = Application.find_by_id(params["a"])
+		if !app.nil?		
+			us = Use.find_by_user_id_and_application_id(u.id, app.id)	
+			if us
+				us.delete
+				us.save
+			else
+				@error = "Error: This application is linked to your account"
+			end
+		else
+			@error = "Error: This application doesn't exist"
+		end
+		
+		@apps_own = Application.where(:user_id => u.id)		
+		uses = Use.where(:user_id => u.id)
+		@apps_linked = []
+		uses.each do |use|
+			@apps_linked.push(Application.find_by_id(use.application_id))
+		end
+		
+		erb :"sessions/list"
+	else
+		redirect 'sauth/sessions/new'
+	end
+end
+

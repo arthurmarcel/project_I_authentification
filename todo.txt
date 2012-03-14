@@ -1,4 +1,4 @@
 - Base de dev
 - Css
 - Authentification Sauth => vérifier url
-
+- Synthétiser et déplcaer le code propre aux lib
