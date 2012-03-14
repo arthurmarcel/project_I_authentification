@@ -3,3 +3,4 @@
 - Authentification Sauth => vérifier url
 - Synthétiser et déplcaer le code propre aux lib
 - Possibilité de modifier un utilisateur ou une application
+- Compte root

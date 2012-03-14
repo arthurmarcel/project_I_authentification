@@ -4,6 +4,6 @@ class AddPubkey < ActiveRecord::Migration
 	end
 
 	def down
-		remove_columne :applications, :pubkey
+		remove_column :applications, :pubkey
 	end
 end

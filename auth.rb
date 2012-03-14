@@ -63,13 +63,15 @@ end
 get '/sauth/sessions' do
 	session["delte_confirm"] = nil
 	if session["current_user"]
-		#puts "session user : #{session["current_user"]}"
-		@login = session["current_user"]
+		#puts "session user : #{session["current_user"]}"		
+		@user = User.find_by_login(session["current_user"])
+		if @user.admin
+			@apps_own = Application.find(:all)
+		else
+			@apps_own = Application.where(:user_id => @user.id)
+		end
 		
-		u = User.find_by_login(@login)
-		@apps_own = Application.where(:user_id => u.id)
-		
-		uses = Use.where(:user_id => u.id)
+		uses = Use.where(:user_id => @user.id)
 		@apps_linked = []
 		uses.each do |use|
 			@apps_linked.push(Application.find_by_id(use.application_id))
@@ -133,7 +135,6 @@ post '/sauth/sessions' do
 		session["current_user"] = "#{u.login}"
 		if a
 			url = a.url
-			#puts "URL : #{url}"
 			key = OpenSSL::PKey::RSA.new(a.pubkey)
 			public_encrypted = key.public_encrypt "#{session["current_user"]}"
 			encoded = Base64.urlsafe_encode64(public_encrypted)
@@ -181,7 +182,7 @@ end
 
 
 post '/sauth/conf_newapp' do
-	if session["current_user"]
+	if session["current_user"]	
 		app = Application.new
 		app.name = params["name"]
 		app.url = params["url"]
@@ -217,11 +218,10 @@ end
 
 get "/sauth/deleteapp" do
 	if session["current_user"]
-		@login = session["current_user"]
-		u = User.find_by_login(@login)
+		@user = User.find_by_login(session["current_user"])
 		app = Application.find_by_id(params["app"])
-		if !app.nil?			
-			if app.user_id == u.id
+		if app		
+			if app.user_id == @user.id || @user.admin
 				uses = Use.where(:application_id => app.id)
 				uses.each do |use|
 					use.delete
@@ -235,9 +235,14 @@ get "/sauth/deleteapp" do
 		else
 			@error = "Error: This application doesn't exist"
 		end
+
+		if @user.admin
+			@apps_own = Application.find(:all)
+		else
+			@apps_own = Application.where(:user_id => @user.id)
+		end
 		
-		@apps_own = Application.where(:user_id => u.id)		
-		uses = Use.where(:user_id => u.id)
+		uses = Use.where(:user_id => @user.id)
 		@apps_linked = []
 		uses.each do |use|
 			@apps_linked.push(Application.find_by_id(use.application_id))
@@ -252,7 +257,11 @@ end
 
 get '/sauth/delete' do
 	if session["current_user"]
-		if session["delte_confirm"] && session["delte_confirm"] == "OK"
+		if (User.find_by_login(session["current_user"])).admin
+			redirect '/sauth/sessions'
+		end
+		
+		if session["delete_confirm"] && session["delete_confirm"] == "OK"
 			user = User.find_by_login(session["current_user"])
 		
 			uses = Use.where(:user_id => user.id)
@@ -271,12 +280,12 @@ get '/sauth/delete' do
 			user.save
 		
 			session["current_user"] = nil
-			session["delte_confirm"] = nil
+			session["delete_confirm"] = nil
 			
 			@msg = "Account successuly deleted !"
 			erb :"sessions/new"
 		else
-			session["delte_confirm"] = "OK"
+			session["delete_confirm"] = "OK"
 			erb :"register/delete_account"
 		end
 	else
@@ -287,11 +296,10 @@ end
 
 get '/sauth/deleteuse' do
 	if session["current_user"]
-		@login = session["current_user"]
-		u = User.find_by_login(@login)
+		@user = User.find_by_login(session["current_user"])
 		app = Application.find_by_id(params["a"])
-		if !app.nil?		
-			us = Use.find_by_user_id_and_application_id(u.id, app.id)	
+		if app
+			us = Use.find_by_user_id_and_application_id(@user.id, app.id)	
 			if us
 				us.delete
 				us.save
@@ -302,8 +310,8 @@ get '/sauth/deleteuse' do
 			@error = "Error: This application doesn't exist"
 		end
 		
-		@apps_own = Application.where(:user_id => u.id)		
-		uses = Use.where(:user_id => u.id)
+		@apps_own = Application.where(:user_id => @user.id)		
+		uses = Use.where(:user_id => @user.id)
 		@apps_linked = []
 		uses.each do |use|
 			@apps_linked.push(Application.find_by_id(use.application_id))

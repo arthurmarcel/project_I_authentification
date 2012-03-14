@@ -5,7 +5,7 @@
 </head>
 <body>
 
-<h1>Welcome <%= @login %> !</h1>
+<h1>Welcome <%= @user.login %> !</h1>
 
 <%if !@error.nil?%>
 	<p><%=@error%></p>
@@ -38,7 +38,9 @@
 <%end%>
 
 <a href="/sauth/newapp">Register a new application</a><br/>
-<a href="/sauth/delete">Delete your account</a><br/>
+<% if @user && !@user.admin %>
+	<a href="/sauth/delete">Delete your account</a><br/>
+<% end %>
 <a href="/sauth/sessions/disconnect">Disconnect</a>
 
 </body>
