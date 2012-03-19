@@ -2,7 +2,7 @@ require 'sinatra'
 require_relative 'env/env'
 require "base64"
 
-set :port, 5678
+set :port, 6789
 
 enable :sessions
 
@@ -16,18 +16,18 @@ helpers do
 end
 
 
-get '/app1.fr' do
+get '/app2.fr' do
 	erb :"client/index"
 end
 
 
-get '/app1.fr/protected' do
-	if get_env.session["current_user_app1"]
-		@user = get_env.session["current_user_app1"]
+get '/app2.fr/protected' do
+	if get_env.session["current_user_app2"]
+		@user = get_env.session["current_user_app2"]
 		erb :"client/protected"
 	elsif params["opt"]
 		options = params["opt"]
-		key = OpenSSL::PKey::RSA.new File.read 'priv_keys/app1_priv.pem'
+		key = OpenSSL::PKey::RSA.new File.read 'priv_keys/app2_priv.pem'
 		encoded = Base64.urlsafe_decode64(options)
 		decoded = key.private_decrypt encoded
 		param = []
@@ -38,24 +38,24 @@ get '/app1.fr/protected' do
 		if login && secret && session["#{secret}"] && (Time.now.to_i - session["#{secret}"]) < 15
 			puts "timer : #{session["#{secret}"]}"			
 			@user = login
-			session["current_user_app1"] = @user
+			session["current_user_app2"] = @user
 			session["#{secret}"] = nil
 			erb :"client/protected"
 		else
 			erb :"client/protected_failed"
 		end
 	else
-		key = OpenSSL::PKey::RSA.new File.read 'priv_keys/app1_priv.pem'
+		key = OpenSSL::PKey::RSA.new File.read 'priv_keys/app2_priv.pem'
 		var = (0...50).map{ ('a'..'z').to_a[rand(26)] }.join
 		crypted = key.private_encrypt "#{var}"
 		encoded = Base64.urlsafe_encode64(crypted)
 		session["#{var}"] = Time.now.to_i
-		redirect "http://localhost:4567/sauth/sessions/new?app=app1&origin=protected&secret=#{encoded}"
+		redirect "http://localhost:4567/sauth/sessions/new?app=app2&origin=protected&secret=#{encoded}"
 	end
 end
 
 
-get '/app1.fr/disconnect' do
-	session["current_user_app1"] = nil
-	redirect "/app1.fr"
+get '/app2.fr/disconnect' do
+	session["current_user_app2"] = nil
+	redirect "/app2.fr"
 end

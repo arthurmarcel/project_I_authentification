@@ -56,6 +56,14 @@ helpers do
 end
 
 
+get "/sauth/users" do
+	if session["current_user"]
+		redirect "/sauth/users/#{session["current_user"]}"
+	else
+		redirect "/sauth/sessions/new"
+	end
+end
+
 
 get "/sauth/users/new" do
 	erb :"register/register"
