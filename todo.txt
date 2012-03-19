@@ -4,5 +4,4 @@
 - Possibilité de modifier un utilisateur ou une application
 - Possibilité de supprimer un user pour l'admin
 - Simuler session dans auth_spec
-- Séparer appli et sauth
 

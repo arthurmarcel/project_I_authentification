@@ -113,7 +113,11 @@ get "/sauth/users/:login_user" do
 			#puts "session user : #{session["current_user"]}"	
 			@apps_own = find_apps_own(@user)
 			@apps_linked = find_apps_use(@user)
-		
+			if @user.admin
+				@users = User.where(:admin => false)
+				#puts @users.inspect
+			end
+			
 			erb :"sessions/list"
 		else
 			erb :"sessions/errlist"
@@ -137,7 +141,6 @@ get "/sauth/sessions/new" do
 			@app = params["app"]
 			@origin = params["origin"]
 			@secret = params["secret"]
-			puts "encode before post :  #{params["secret"]}"
 			@msg = "Please log in sauth to access #{params["app"]}"
 		end
 		erb :"sessions/new"
@@ -276,7 +279,11 @@ get "/sauth/apps/:app_name/delete" do
 
 		@apps_own = find_apps_own(@user)
 		@apps_linked = find_apps_use(@user)
-		
+		if @user.admin
+			@users = User.where(:admin => false)
+			#puts @users.inspect
+		end
+			
 		erb :"sessions/list"
 	else
 		redirect "sauth/sessions/new"
@@ -286,15 +293,14 @@ end
 
 get "/sauth/users/:login/delete" do
 	if session["current_user"] 
-		@login = session["current_user"]
-		if (User.find_by_login(session["current_user"])).admin
+		@login = params[:login]
+		if User.find_by_login(@login).admin
 			redirect "/sauth/users/#{session["current_user"]}"
-		end
-		
-		if session["current_user"] == params[:login]
-			if session["delete_confirm"] && session["delete_confirm"] == "OK"
-				user = User.find_by_login(session["current_user"])
-		
+		elsif (session["current_user"] == @login) || (User.find_by_login(session["current_user"]).admin) 
+			if params["ok"] && params["ok"] == "true"
+				user = User.find_by_login(@login)
+				deleter = User.find_by_login(session["current_user"])
+				
 				uses = Use.where(:user_id => user.id)
 				uses.each do |u|
 							u.delete
@@ -309,14 +315,16 @@ get "/sauth/users/:login/delete" do
 			
 				user.delete
 				user.save
-		
-				session["current_user"] = nil
-				session["delete_confirm"] = nil
-			
+				
 				@msg = "Account successuly deleted !"
-				erb :"sessions/new"
+				
+				if deleter.admin
+					redirect "/sauth/users/#{session["current_user"]}"
+				else
+					session["current_user"] = nil
+					erb :"sessions/new"
+				end
 			else
-				session["delete_confirm"] = "OK"
 				erb :"register/delete_account"
 			end
 		else
@@ -346,7 +354,11 @@ get "/sauth/uses/:app_name/delete" do
 		
 		@apps_own = find_apps_own(@user)
 		@apps_linked = find_apps_use(@user)
-		
+		if @user.admin
+			@users = User.where(:admin => false)
+			#puts @users.inspect
+		end
+			
 		erb :"sessions/list"
 	else
 		redirect "sauth/sessions/new"

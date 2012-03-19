@@ -37,6 +37,17 @@
 	<p>No application uses your account.</p>
 <%end%>
 
+<% if @users %>
+	<div class="listusers">
+		<p>List of users:</p>
+		<ul>
+			<% @users.each do |u| %>
+				<li><%=u.login%>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="/sauth/users/<%=u.login%>/delete">Delete</a></li>
+			<% end %>
+		</ul>
+	</div>
+<%end%>
+
 <a href="/sauth/apps/new">Register a new application</a><br/>
 <% if @user && !@user.admin %>
 	<a href="/sauth/users/<%=@user.login%>/delete">Delete your account</a><br/>
