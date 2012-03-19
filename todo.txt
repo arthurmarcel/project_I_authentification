@@ -1,9 +1,8 @@
 - Base de dev
 - Css
-- Authentification Sauth => vérifier url
 - Synthétiser et déplacer le code propre aux lib
 - Possibilité de modifier un utilisateur ou une application
 - Possibilité de supprimer un user pour l'admin
 - Simuler session dans auth_spec
-- routes rest
+- Séparer appli et sauth
 
