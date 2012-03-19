@@ -3,5 +3,7 @@
 - Authentification Sauth => vérifier url
 - Synthétiser et déplacer le code propre aux lib
 - Possibilité de modifier un utilisateur ou une application
-- Gérer le timer d'authentification pour qu'il soit différent à chaque fois
+- Possibilité de supprimer un user pour l'admin
+- Simuler session dans auth_spec
+- routes rest
 

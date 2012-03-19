@@ -39,6 +39,10 @@
 	<% if !@origin.nil? %>
  	 <input id="origin" name="origin" value="<%=@origin%>" size="50" type="HIDDEN" />
 	<% end %> 	
+	
+	<% if !@secret.nil? %>
+ 	 <input id="secret" name="secret" value="<%=@secret%>" size="50" type="HIDDEN" />
+	<% end %> 	
   
   <div class="actions">
     <input name="commit" type="submit" value="Log in" />
@@ -46,7 +50,7 @@
   
 </form>
 
-<a href="/sauth/register">Register</a>
+<a href="/sauth/users/new">Register</a>
 
 </body>
 </html>

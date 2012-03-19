@@ -20,12 +20,49 @@ ActiveRecord::Base.establish_connection(configuration)
 
 enable :sessions
 
-get '/sauth/register' do
+helpers do
+
+	def find_url_app_redirect(app, origin, first_sec_encoded, new_sec_decoded)			
+		key = OpenSSL::PKey::RSA.new(app.pubkey)
+		
+		first_sec_decoded = Base64.urlsafe_decode64(first_sec_encoded)
+		first_sec_decrypted = key.public_decrypt "#{first_sec_decoded}"
+		
+		secret = "#{new_sec_decoded};#{first_sec_decrypted}"
+		public_encrypted = key.public_encrypt "#{secret}"
+		encoded = Base64.urlsafe_encode64(public_encrypted)
+		
+		url = "#{app.url}/#{origin}?opt=#{encoded}"
+		return url
+	end
+	
+	def find_apps_own(user)
+		if user.admin
+			return Application.find(:all)
+		else
+			return Application.where(:user_id => @user.id)
+		end
+	end
+	
+	def find_apps_use(user)
+		uses = Use.where(:user_id => user.id)
+		apps_linked = []
+		uses.each do |use|
+			apps_linked.push(Application.find_by_id(use.application_id))
+		end
+		return apps_linked
+	end
+
+end
+
+
+
+get "/sauth/users/new" do
 	erb :"register/register"
 end
 
 
-post '/sauth/conf_register' do
+post "/sauth/users" do
 	u = User.new
 	u.login = params["login"]
 	u.password = params["password"]
@@ -33,7 +70,7 @@ post '/sauth/conf_register' do
 	if u.valid? && params["password"] == params["password_confirmation"]
 		u.save
 		session["current_user"] = "#{u.login}"
-		redirect '/sauth/sessions'
+		redirect "sauth/users/#{u.login}"
 	else
 		@errors = u.errors.messages
 		
@@ -60,32 +97,27 @@ post '/sauth/conf_register' do
 end
 
 
-get '/sauth/sessions' do
+get "/sauth/users/:login_user" do
 	session["delte_confirm"] = nil
 	if session["current_user"]
-		#puts "session user : #{session["current_user"]}"		
 		@user = User.find_by_login(session["current_user"])
-		if @user.admin
-			@apps_own = Application.find(:all)
+		if session["current_user"] == params[:login_user] || @user.admin
+			#puts "session user : #{session["current_user"]}"	
+			@apps_own = find_apps_own(@user)
+			@apps_linked = find_apps_use(@user)
+		
+			erb :"sessions/list"
 		else
-			@apps_own = Application.where(:user_id => @user.id)
+			erb :"sessions/errlist"
 		end
-		
-		uses = Use.where(:user_id => @user.id)
-		@apps_linked = []
-		uses.each do |use|
-			@apps_linked.push(Application.find_by_id(use.application_id))
-		end
-		
-		erb :"sessions/list"
 	else
-		redirect '/sauth/sessions/new'
+		redirect "/sauth/sessions/new"
 	end
 end
 
 
-get '/sauth/sessions/new' do
-	if !params["app"].nil? && !params["origin"].nil?
+get "/sauth/sessions/new" do
+	if params["app"] && params["origin"] && params["secret"]
 		a = Application.find_by_name(params["app"])
 		if a.nil?
 			halt erb :"appsauth/app_not_registered"
@@ -96,15 +128,14 @@ get '/sauth/sessions/new' do
 		if a
 			@app = params["app"]
 			@origin = params["origin"]
+			@secret = params["secret"]
+			puts "encode before post :  #{params["secret"]}"
 			@msg = "Please log in sauth to access #{params["app"]}"
 		end
 		erb :"sessions/new"
 	else
 		if a
-			url = a.url
-			key = OpenSSL::PKey::RSA.new(a.pubkey)
-			public_encrypted = key.public_encrypt "#{session["current_user"]}"
-			encoded = Base64.urlsafe_encode64(public_encrypted)
+			url = find_url_app_redirect(a, params["origin"], params["secret"], session["current_user"])
 			
 			us = Use.new
 			us.user_id = User.find_by_login(session["current_user"]).id
@@ -113,16 +144,17 @@ get '/sauth/sessions/new' do
 				us.save
 			end
 			
-			redirect "#{a.url}/#{params["origin"]}?secret=#{encoded}"
+			redirect "#{url}"
 		else
-			redirect '/sauth/sessions'
+			redirect "/sauth/users/#{session["current_user"]}"
 		end
 	end
 end
 
 
-post '/sauth/sessions' do
-	if !params["app"].nil? && !params["origin"].nil?
+post "/sauth/sessions" do
+
+	if params["app"] && params["origin"] && params["secret"]
 		a = Application.find_by_name(params["app"])
 		if a.nil?
 			halt erb :"appsauth/app_not_registered"
@@ -134,26 +166,24 @@ post '/sauth/sessions' do
 	if u && (u.password == User.encode_pass(params["password"]))
 		session["current_user"] = "#{u.login}"
 		if a
-			url = a.url
-			key = OpenSSL::PKey::RSA.new(a.pubkey)
-			public_encrypted = key.public_encrypt "#{session["current_user"]}"
-			encoded = Base64.urlsafe_encode64(public_encrypted)
+			url = find_url_app_redirect(a, params["origin"], params["secret"], session["current_user"])
 			
 			us = Use.new
-			us.user_id = u.id
+			us.user_id = User.find_by_login(session["current_user"]).id
 			us.application_id = a.id
 			if us.valid?
 				us.save
 			end
 			
-			redirect "#{url}/#{params["origin"]}?secret=#{encoded}"
+			redirect "#{url}"
 		else
-			redirect '/sauth/sessions'
+			redirect "/sauth/users/#{u.login}"
 		end
 	else
 		if a
 			@app = params["app"]
 			@origin = params["origin"]
+			@secret = params["secret"]
 		end
 		if u
 			@login = params["login"]
@@ -166,22 +196,22 @@ post '/sauth/sessions' do
 end
 
 
-get '/sauth/sessions/disconnect' do
+get "/sauth/sessions/delete" do
 	session["current_user"] = nil
-	redirect 'sauth/sessions/new'
+	redirect "sauth/sessions/new"
 end
 
 
-get '/sauth/newapp' do
+get "/sauth/apps/new" do
 	if session["current_user"]
 		erb :"register/newapp"
 	else
-		redirect 'sauth/sessions/new'
+		redirect "sauth/sessions/new"
 	end
 end
 
 
-post '/sauth/conf_newapp' do
+post "/sauth/apps" do
 	if session["current_user"]	
 		app = Application.new
 		app.name = params["name"]
@@ -192,7 +222,7 @@ post '/sauth/conf_newapp' do
 	
 		if app.valid?
 			app.save
-			redirect '/sauth/sessions'
+			redirect "/sauth/users/#{session["current_user"]}"
 		else
 			@errors = app.errors.messages
 			
@@ -211,15 +241,15 @@ post '/sauth/conf_newapp' do
 			erb :"register/newapp"
 		end
 	else
-		redirect 'sauth/sessions/new'
+		redirect "sauth/sessions/new"
 	end
 end
 
 
-get "/sauth/deleteapp" do
+get "/sauth/apps/:app_name/delete" do
 	if session["current_user"]
 		@user = User.find_by_login(session["current_user"])
-		app = Application.find_by_id(params["app"])
+		app = Application.find_by_name(params[:app_name])
 		if app		
 			if app.user_id == @user.id || @user.admin
 				uses = Use.where(:application_id => app.id)
@@ -236,57 +266,53 @@ get "/sauth/deleteapp" do
 			@error = "Error: This application doesn't exist"
 		end
 
-		if @user.admin
-			@apps_own = Application.find(:all)
-		else
-			@apps_own = Application.where(:user_id => @user.id)
-		end
-		
-		uses = Use.where(:user_id => @user.id)
-		@apps_linked = []
-		uses.each do |use|
-			@apps_linked.push(Application.find_by_id(use.application_id))
-		end
+		@apps_own = find_apps_own(@user)
+		@apps_linked = find_apps_use(@user)
 		
 		erb :"sessions/list"
 	else
-		redirect 'sauth/sessions/new'
+		redirect "sauth/sessions/new"
 	end
 end
 
 
-get '/sauth/delete' do
-	if session["current_user"]
+get "/sauth/users/:login/delete" do
+	if session["current_user"] 
+		@login = session["current_user"]
 		if (User.find_by_login(session["current_user"])).admin
-			redirect '/sauth/sessions'
+			redirect "/sauth/users/#{session["current_user"]}"
 		end
 		
-		if session["delete_confirm"] && session["delete_confirm"] == "OK"
-			user = User.find_by_login(session["current_user"])
+		if session["current_user"] == params[:login]
+			if session["delete_confirm"] && session["delete_confirm"] == "OK"
+				user = User.find_by_login(session["current_user"])
 		
-			uses = Use.where(:user_id => user.id)
-			uses.each do |u|
-						u.delete
-						u.save
-			end
+				uses = Use.where(:user_id => user.id)
+				uses.each do |u|
+							u.delete
+							u.save
+				end
 		
-			apps = Application.where(:user_id => user.id)
-			apps.each do |a|
-						a.delete
-						a.save
-			end
+				apps = Application.where(:user_id => user.id)
+				apps.each do |a|
+							a.delete
+							a.save
+				end
 			
-			user.delete
-			user.save
+				user.delete
+				user.save
 		
-			session["current_user"] = nil
-			session["delete_confirm"] = nil
+				session["current_user"] = nil
+				session["delete_confirm"] = nil
 			
-			@msg = "Account successuly deleted !"
-			erb :"sessions/new"
+				@msg = "Account successuly deleted !"
+				erb :"sessions/new"
+			else
+				session["delete_confirm"] = "OK"
+				erb :"register/delete_account"
+			end
 		else
-			session["delete_confirm"] = "OK"
-			erb :"register/delete_account"
+			erb :"register/err_delete_account"
 		end
 	else
 		erb :"sessions/new"
@@ -294,32 +320,28 @@ get '/sauth/delete' do
 end
 
 
-get '/sauth/deleteuse' do
+get "/sauth/uses/:app_name/delete" do
 	if session["current_user"]
 		@user = User.find_by_login(session["current_user"])
-		app = Application.find_by_id(params["a"])
+		app = Application.find_by_name(params["app_name"])
 		if app
 			us = Use.find_by_user_id_and_application_id(@user.id, app.id)	
 			if us
 				us.delete
 				us.save
 			else
-				@error = "Error: This application is linked to your account"
+				@error = "Error: This application is not linked to your account"
 			end
 		else
 			@error = "Error: This application doesn't exist"
 		end
 		
-		@apps_own = Application.where(:user_id => @user.id)		
-		uses = Use.where(:user_id => @user.id)
-		@apps_linked = []
-		uses.each do |use|
-			@apps_linked.push(Application.find_by_id(use.application_id))
-		end
+		@apps_own = find_apps_own(@user)
+		@apps_linked = find_apps_use(@user)
 		
 		erb :"sessions/list"
 	else
-		redirect 'sauth/sessions/new'
+		redirect "sauth/sessions/new"
 	end
 end
 
