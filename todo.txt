@@ -1,7 +1,7 @@
-- Base de dev
-- Css
-- Synthétiser et déplacer le code propre aux lib
-- Possibilité de modifier un utilisateur ou une application
-- Possibilité de supprimer un user pour l'admin
-- Simuler session dans auth_spec
+- Css (hyperliens, boutons delete)
+- README
+- Gemfile
+- Formulaires plus accueillants
+- Réorganiser erbs
+- Renommer client -> app, auth.rb -> sauth.rb
 

@@ -1,24 +1,35 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Registration page</title>
-</head>
-<body>
-
 <h1>New user</h1>
 
-	<% if @errors.nil? %>
+	<% if !@user %>
 		<p>Please complete the different fields</p>
 	<% else %>
-		<p>Register failed for the next reasons :</p>
-		<ul>
-			<% @errors.each do |field, errs| %>
-				<li><%= field %> <%= errs.join(' and ') %></li>
-			<% end %>
-		</ul>
+		<% @errs = @user.get_errs %>
+		<% if @errs %>
+			<%
+			if @pass != @conf
+				@errs[:password_confirmation] = []
+				@errs[:password_confirmation].push("is not the same as password")
+			end
+			
+			if !@errs[:password] && !@errs[:password_confirmation]
+				@password = @pass
+				@password_confirmation = @conf
+			end
+	
+			if !@errs[:login]
+				@login = @log
+			end
+			%>
+			
+			<p>Register failed for the next reasons :</p>
+			<ul>
+				<% @errs.each do |field, err| %>
+					<li><%= field %> <%= err.join(' and ') %></li>
+				<% end %>
+			</ul>
+			
+		<% end %>
 	<% end %>
-
-
 
 <form action="/sauth/users" method="post">
   <div class="field">
@@ -41,7 +52,3 @@
     <input name="commit" type="submit" value="Create user account" />
   </div>
 </form>
-
-</body>
-</html>
-

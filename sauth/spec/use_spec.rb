@@ -1,7 +1,4 @@
-$: << File.join(File.dirname(__FILE__), '..')
-
-require 'use'
-require_relative 'spec_helper'
+require 'spec_helper'
 
 describe Use do
 
@@ -35,12 +32,12 @@ describe Use do
 	
 		it "should not be valid without user_id" do
 			subject.valid?.should be_false
-			subject.errors.messages[:user_id].include?("is invalid").should be_true
+			subject.errors.messages[:user_id_before_type_cast].include?("is invalid").should be_true
 		end
 		
 		it "should not be valid without application_id" do
 			subject.valid?.should be_false
-			subject.errors.messages[:application_id].include?("is invalid").should be_true
+			subject.errors.messages[:application_id_before_type_cast].include?("is invalid").should be_true
 		end
 	end
 	

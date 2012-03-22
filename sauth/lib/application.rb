@@ -25,10 +25,46 @@ class Application < ActiveRecord::Base
 	
 	# Public key
 	validates :pubkey, :presence => true
-	#validates :pubkey_before_type_cast, :format => { :with => /^-----BEGIN PUBLIC KEY-----.+-----END PUBLIC KEY-----$/i, :on => :create }
 
 	######################################
 	# Class definition
 	######################################
+	def get_errs
+		if errors.messages
+			errs = errors.messages
+			
+			if errs[:name_before_type_cast] && errs[:name_before_type_cast].include?("is invalid")
+				if !errs[:name]
+					errs[:name] = []
+				end
+				errs[:name].push("must be an alphanumeric string with 3 characters at least")
+				errs.delete(:name_before_type_cast)
+			end
+			
+			if errs[:url_before_type_cast] && errs[:url_before_type_cast].include?("is invalid")
+				if !errs[:url]
+					errs[:url] = []
+				end
+				errs[:url].push("should match the indicated format")
+				errs.delete(:url_before_type_cast)
+			end
+			
+			return errs
+		else
+			return nil
+		end
+	end
 	
+	def delete_linked_uses
+		uses_deleted = []
+		
+		uses = Use.where(:application_id => id)
+		uses.each do |u|
+					u.delete
+					u.save
+					uses_deleted.push("(#{User.find_by_id(u.user_id).login}, #{self[:name]})")
+		end
+		
+		return uses_deleted
+	end
 end

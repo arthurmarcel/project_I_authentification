@@ -1,22 +1,32 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>New app page</title>
-</head>
-<body>
-
 <h1>Register a new application</h1>
 
-<% if @errors.nil? %>
+<% if !@app %>
 	<p>Please complete the different fields</p>
 <% else %>
-	<p>Application register failed for the next reasons :</p>
-	<ul>
-		<% @errors.each do |field, errs| %>
-			<li><%= field %> <%= errs.join(' and ') %></li>
-		<% end %>
-	</ul>
+	<% @errors = @app.get_errs %>
+	<% if @errors%>
+		<%
+		if !@errors[:name]
+			@name = params["name"]
+		end
+
+		if !@errors[:url]
+			@url = params["url"]
+		end
+
+		if !@errors[:pubkey]
+			@pubkey = params["pubkey"]
+		end
+		%>
+		<p>Application register failed for the next reasons :</p>
+		<ul>
+			<% @errors.each do |field, errs| %>
+				<li><%= field %> <%= errs.join(' and ') %></li>
+			<% end %>
+		</ul>
+	<%end%>
 <% end %>
+			
 
 <form action="/sauth/apps" method="post">
 
@@ -40,7 +50,3 @@
   </div>
   
 </form>
-
-</body>
-</html>
-

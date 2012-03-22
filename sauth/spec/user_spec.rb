@@ -1,7 +1,4 @@
-$: << File.join(File.dirname(__FILE__), '..')
-
-require 'user'
-require_relative 'spec_helper'
+require 'spec_helper'
 
 describe User do
 
@@ -66,13 +63,12 @@ describe User do
 
 	describe "is valid" do
 		subject do
-			u = User.new
-			u.login = "login"
-			u.password = "password"
+			u = User.new({"login" => "login", "password" => "password"})
 			u
 		end
 
 		it "should be valid" do
+			subject.valid?
 			subject.valid?.should be_true
 		end
 	end

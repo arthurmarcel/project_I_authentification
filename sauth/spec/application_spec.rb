@@ -1,7 +1,4 @@
-$: << File.join(File.dirname(__FILE__), '..')
-
-require 'application'
-require_relative 'spec_helper'
+require 'spec_helper'
 
 describe Application do
 
@@ -69,6 +66,7 @@ describe Application do
 			app = Application.new
 			app.name = "test_appli"
 			app.url = "https://www.test.com"
+			app.pubkey = "0000000000"
 			app.user_id = "012"
 			app
 		end

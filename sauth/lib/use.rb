@@ -13,11 +13,11 @@ class Use < ActiveRecord::Base
 	
 	# User
 	validates :user_id, :presence => true
-	validates :user_id, :format => { :with => /^[0-9]+$/, :on => :create }
+	validates :user_id_before_type_cast, :format => { :with => /^[0-9]+$/, :on => :create }
 	
 	# Application
 	validates :application_id, :presence => true
-	validates :application_id, :format => { :with => /^[0-9]+$/, :on => :create }
+	validates :application_id_before_type_cast, :format => { :with => /^[0-9]+$/, :on => :create }
 	
 	######################################
 	# Class definition
