@@ -314,3 +314,30 @@ I, [2012-03-22T23:11:28.730432 #4247]  INFO -- : [Session]			toto connected
 I, [2012-03-22T23:11:28.737142 #4247]  INFO -- : [Session]			 disconnected
 I, [2012-03-22T23:11:28.743881 #4247]  INFO -- : New application				app1
 I, [2012-03-22T23:11:28.772041 #4247]  INFO -- : Application deleted			app1
+I, [2012-03-22T23:57:17.697386 #4452]  INFO -- : [Session]			root connected
+I, [2012-03-22T23:57:46.366280 #4452]  INFO -- : New application				App1
+I, [2012-03-22T23:58:25.748153 #4452]  INFO -- : New application				App2
+I, [2012-03-22T23:58:46.433910 #4452]  INFO -- : [Session]			root disconnected
+I, [2012-03-22T23:59:47.845495 #4452]  INFO -- : [Session]			root connected
+I, [2012-03-22T23:59:50.225135 #4452]  INFO -- : Application deleted			App1
+I, [2012-03-22T23:59:51.817052 #4452]  INFO -- : Application deleted			App2
+I, [2012-03-23T00:00:15.135616 #4452]  INFO -- : New application				app1
+I, [2012-03-23T00:00:35.132428 #4452]  INFO -- : New application				app2
+I, [2012-03-23T00:00:46.465977 #4452]  INFO -- : New use				(root, app2)
+I, [2012-03-23T00:00:52.070848 #4452]  INFO -- : [Session]			root disconnected
+I, [2012-03-23T00:01:16.846529 #4452]  INFO -- : [Session]			root connected
+I, [2012-03-23T00:01:27.593470 #4452]  INFO -- : [Session]			root disconnected
+I, [2012-03-23T00:01:33.215137 #4452]  INFO -- : [Session]			root connected
+I, [2012-03-23T00:01:44.646164 #4452]  INFO -- : [Session]			root disconnected
+I, [2012-03-23T00:02:10.617379 #4452]  INFO -- : [Session]			root connected
+I, [2012-03-23T00:02:10.679007 #4452]  INFO -- : New use				(root, app1)
+I, [2012-03-23T00:02:23.273453 #4452]  INFO -- : Use deleted				(root, app1)
+I, [2012-03-23T00:02:25.078818 #4452]  INFO -- : Use deleted				(root, app2)
+I, [2012-03-23T00:03:04.126103 #4531]  INFO -- : Account creation				toto
+I, [2012-03-23T00:03:04.126282 #4531]  INFO -- : [Session]			toto disconnected
+I, [2012-03-23T00:03:04.133755 #4531]  INFO -- : User deleted					toto
+I, [2012-03-23T00:03:04.133900 #4531]  INFO -- : [Session]			toto disconnected
+I, [2012-03-23T00:03:04.154523 #4531]  INFO -- : [Session]			toto connected
+I, [2012-03-23T00:03:04.161400 #4531]  INFO -- : [Session]			 disconnected
+I, [2012-03-23T00:03:04.168132 #4531]  INFO -- : New application				app1
+I, [2012-03-23T00:03:04.201940 #4531]  INFO -- : Application deleted			app1

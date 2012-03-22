@@ -116,6 +116,27 @@ Have a look to the short list below to find the main pages of the different serv
 
 
 
+##################################################################################################################
+#	Scenari																										 #
+##################################################################################################################
+1)	Manipulating sessions  
+	-> Go to authentication page to open a new session with root user
+	-> Go to an application index then click to enter the protected area (Normally, you don't have to log in because it's already done)
+	-> Click "disconnect" on the application
+	-> Return to the sauth and click "disconnect"
+	-> Return to the application and try to access to the protected area (you should be redirected to sauth)
+	-> Log in the sauth, you are redirected on the protected area of the application !
+	
+2) 	Register a new user
+	-> Go to sauth/sessions/new
+	-> If you are connected, click "disconnect"
+	-> At the bottom, click "register"
+	-> Fill in the different fields, then click "log in" (try with "root" as login first, you should get an error)
+	-> You should now be logged if you gave good values
+	
+3) 	Try to reuse a "return to app after connecting sauth" url, it should fail
+
+
 Here is the structure of the project_I_authentification repository :
 .
 ├── app1
