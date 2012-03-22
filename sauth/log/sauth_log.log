@@ -283,3 +283,11 @@ I, [2012-03-22T20:59:11.554333 #3379]  INFO -- : [Session]			toto connected
 I, [2012-03-22T20:59:11.561999 #3379]  INFO -- : [Session]			 disconnected
 I, [2012-03-22T20:59:11.581794 #3379]  INFO -- : New application				app1
 I, [2012-03-22T20:59:11.588923 #3379]  INFO -- : Application deleted			app1
+I, [2012-03-22T22:30:31.291828 #3533]  INFO -- : Account creation				toto
+I, [2012-03-22T22:30:31.291991 #3533]  INFO -- : [Session]			toto disconnected
+I, [2012-03-22T22:30:31.299033 #3533]  INFO -- : User deleted					toto
+I, [2012-03-22T22:30:31.299170 #3533]  INFO -- : [Session]			toto disconnected
+I, [2012-03-22T22:30:31.331490 #3533]  INFO -- : [Session]			toto connected
+I, [2012-03-22T22:30:31.339654 #3533]  INFO -- : [Session]			 disconnected
+I, [2012-03-22T22:30:31.359487 #3533]  INFO -- : New application				app1
+I, [2012-03-22T22:30:31.366720 #3533]  INFO -- : Application deleted			app1

@@ -8,6 +8,6 @@ require 'rspec'
 require 'active_record'
 require 'rack/test'
 
-require_relative '../auth'
+require_relative '../sauth'
 
 ENV['RACK_ENV'] = 'test'
