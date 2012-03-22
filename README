@@ -1,4 +1,206 @@
-######################################################################
-#												Projet Authentification											 #
-######################################################################
+##################################################################################################################
+##################################################################################################################
+#																												 #
+#												PROJECT AUTHENTICATION											 #
+#																												 #
+##################################################################################################################
+##################################################################################################################
 
+
+
+INP Enseeiht - APP 2A IR - Arthur Marcel
+Applications web - P. Gambarotto
+
+
+
+##################################################################################################################
+#	Short Presentation																							 #
+##################################################################################################################
+The projects is divided in three directories :
+	- sauth : the authentication service
+	- app1 : an application
+	- app1 : an other application (almost the same)
+	
+
+
+##################################################################################################################
+#	Check project specification																					 #
+##################################################################################################################
+To check the validity of the different parts, just use these commands
+
+		For "sauth"       -      For "app1"      -      For "app2"
+	
+	   	 cd sauth                 cd app1                cd app2
+   	 
+	Then: rspec spec/* --format documentation 
+ 
+ 
+
+##################################################################################################################
+#	Run components           																					 #
+################################################################################################################## 
+To run the different services, use the command below
+	
+		For "sauth"           -           For "app1"           -           For "app2"
+	
+	   	 cd sauth     					   cd app1      					cd app2
+	   	 
+		ruby sauth.rb					 ruby app1.rb					  ruby app2.rb
+	 
+
+
+##################################################################################################################
+#	Use the services																							 #
+##################################################################################################################
+To use these services, you need to run your browser and uses the adresses below
+	 
+			     For "sauth"                  -            For "app1"            -          For "app2"
+
+	 localhost:4567/sauth/sessions/new     	    	 localhost:5678/app1.fr   	      localhost:6789/app2.fr
+	 
+
+
+##################################################################################################################
+#	Basic Tools																									 #
+##################################################################################################################
+When starting the authentication service, you will already have
+	- an available root account
+		login : root
+		password : root
+		
+	- two applications (app1 & app2) registered with root account
+
+
+
+##################################################################################################################
+#	Registering an application																					 #
+##################################################################################################################
+If you want to delete an application and then to register it again, you will be asked for a public key.
+You must give this RSA key to the sauth to be able to communicate with it safely.
+
+To get it, just move to the directory of your application. You will find a "key" directory containing two keys,
+one is public and the other is private. Just copy the content of the public key file in the right registration
+field.
+
+eg: Registering app1
+Copy / Paste the content of app1/keys/app1_pub.pem
+
+When creating and registering a new application, you have to ensure that your application manage RSA to use sauth.
+Then just use these commands to create the keys
+	
+	irb
+	require 'openssl'
+	key = OpenSSL::PKey::RSA.new 2048
+	open 'private_key.pem', 'w' do |io| io.write key.to_pem end
+	open 'public_key.pem', 'w' do |io| io.write key.public_key.to_pem end
+
+
+
+##################################################################################################################
+#	Have more fun																								 #
+##################################################################################################################
+If you want to test the different functionnalities of the services, just navigate on it.
+Have a look to the short list below to find the main pages of the different services :
+	* Sauth
+		- Register a new user						 localhost:4567/sauth/users/new 		
+		- Open a session 							 localhost:4567/sauth/sessions/new
+		- See your personnal elements				 localhost:4567/sauth/users/<username>
+		
+	* App1
+		- Index page								 localhost:5678/app1.fr	
+		- Protected area							 localhost:5678/app1.fr/protected
+		
+	* App2
+		- Index page								 localhost:6789/app2.fr	
+		- Protected area							 localhost:6789/app2.fr/protected
+
+
+
+Here is the structure of the project_I_authentification repository :
+.
+├── app1
+│   ├── app1.rb
+│   ├── env
+│   │   └── env.rb
+│   ├── keys
+│   │   ├── app1_priv.pem
+│   │   └── app1_pub.pem
+│   ├── spec
+│   │   └── app1_spec.rb
+│   ├── views
+│   │   ├── client
+│   │   │   ├── index.erb
+│   │   │   ├── protected.erb
+│   │   │   └── protected_failed.erb
+│   │   └── layout.erb
+│   └── www
+│       ├── img
+│       │   ├── blue.png
+│       │   └── logo.png
+│       └── style.css
+├── app2
+│   ├── app2.rb
+│   ├── env
+│   │   └── env.rb
+│   ├── keys
+│   │   ├── app2_priv.pem
+│   │   └── app2_pub.pem
+│   ├── spec
+│   │   └── app2_spec.rb
+│   ├── views
+│   │   ├── client
+│   │   │   ├── index.erb
+│   │   │   ├── protected.erb
+│   │   │   └── protected_failed.erb
+│   │   └── layout.erb
+│   └── www
+│       ├── img
+│       │   ├── blue.png
+│       │   └── logo.png
+│       └── style.css
+├── projet_partie_authentification.pdf
+├── README
+└── sauth
+    ├── config
+    │   └── database.yml
+    ├── db
+    │   ├── authentification.sqlite3
+    │   └── migrate
+    │       ├── 001_create_users.rb
+    │       ├── 002_create_applications.rb
+    │       ├── 003_create_uses.rb
+    │       ├── 004_add_pubkey.rb
+    │       └── 005_add_admin.rb
+    ├── Gemfile
+    ├── Gemfile.lock
+    ├── lib
+    │   ├── application.rb
+    │   ├── use.rb
+    │   └── user.rb
+    ├── log
+    │   └── sauth_log.log
+    ├── migration.rb
+    ├── sauth.rb
+    ├── spec
+    │   ├── application_spec.rb
+    │   ├── sauth_spec.rb
+    │   ├── spec_helper.rb
+    │   ├── user_spec.rb
+    │   └── use_spec.rb
+    ├── views
+    │   ├── applications
+    │   │   └── newapp.erb
+    │   ├── appsauth
+    │   │   └── app_not_registered.erb
+    │   ├── layout.erb
+    │   ├── sessions
+    │   │   └── new.erb
+    │   └── users
+    │       ├── err_delete_account.erb
+    │       ├── list.erb
+    │       └── register.erb
+    └── www
+        ├── img
+        │   ├── blue.png
+        │   └── logo.png
+        └── style.css

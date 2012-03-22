@@ -1,0 +1,52 @@
+<h1>Register a new application</h1>
+
+<% if !@app %>
+	<p>Please complete the different fields to register a new application</p>
+<% else %>
+	<% @errors = @app.get_errs %>
+	<% if @errors%>
+		<%
+		if !@errors[:name]
+			@name = params["name"]
+		end
+
+		if !@errors[:url]
+			@url = params["url"]
+		end
+
+		if !@errors[:pubkey]
+			@pubkey = params["pubkey"]
+		end
+		%>
+		<p>Application register failed for the next reasons :</p>
+		<ul>
+			<% @errors.each do |field, errs| %>
+				<li><%= field %> <%= errs.join(' and ') %></li>
+			<% end %>
+		</ul>
+	<%end%>
+<% end %>
+			
+
+<form action="/sauth/apps" method="post">
+
+  <div class="field">
+    <label for="name">Application name</label><br />
+    <input id="name" name="name" size="30" type="text" value="<% if @name %><%= @name %><% end %>"/>
+  </div>
+  
+  <div class="field">
+    <label for="url">Application URL (http(s)://yourapp.xx)</label><br />
+    <input id="url" name="url" size="30" type="text" value="<% if @url %><%= @url %><% end %>"/>
+  </div>
+  
+   <div class="field">
+    <label for="pubkey">RSA Public key (used to crypt authentication, corresponding to your RSA private key)</label><br />
+    <textarea name="pubkey" rows=20 cols=100 ><% if @pubkey %><%= @pubkey %><% end %></textarea>
+  </div>
+  
+  <div class="actions">
+    <input name="commit" type="submit" value="Register Application" />
+  </div>
+  
+</form>

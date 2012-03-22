@@ -6,6 +6,7 @@ set :port, 5678
 
 enable :sessions
 
+set :public_folder, File.dirname(__FILE__) + '/www'
 
 helpers do
 	def get_env
@@ -27,7 +28,7 @@ get '/app1.fr/protected' do
 		erb :"client/protected"
 	elsif params["opt"]
 		options = params["opt"]
-		key = OpenSSL::PKey::RSA.new File.read 'priv_keys/app1_priv.pem'
+		key = OpenSSL::PKey::RSA.new File.read 'keys/app1_priv.pem'
 		encoded = Base64.urlsafe_decode64(options)
 		decoded = key.private_decrypt encoded
 		param = []
@@ -44,7 +45,7 @@ get '/app1.fr/protected' do
 			erb :"client/protected_failed"
 		end
 	else
-		key = OpenSSL::PKey::RSA.new File.read 'priv_keys/app1_priv.pem'
+		key = OpenSSL::PKey::RSA.new File.read 'keys/app1_priv.pem'
 		var = (0...50).map{ ('a'..'z').to_a[rand(26)] }.join
 		crypted = key.private_encrypt "#{var}"
 		encoded = Base64.urlsafe_encode64(crypted)

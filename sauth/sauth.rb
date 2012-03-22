@@ -64,7 +64,7 @@ end
 
 get "/sauth/users/new" do
 	if !session["current_user"]
-		erb :"register/register"
+		erb :"users/register"
 	else
 		redirect "/sauth/users/#{session["current_user"]}"
 	end
@@ -88,7 +88,7 @@ post "/sauth/users" do
 			
 			redirect "sauth/users/#{@user.login}"
 		else		
-			erb :"register/register"
+			erb :"users/register"
 		end
 	else
 		redirect "/sauth/users/#{session["current_user"]}"
@@ -110,7 +110,7 @@ get "/sauth/users/:login_user" do
 				@users = User.where(:admin => false)
 			end
 			
-			erb :"sessions/list"
+			erb :"users/list"
 		else
 			redirect "/sauth/users/#{session["current_user"]}"
 		end
@@ -161,7 +161,7 @@ get "/sauth/users/:login/delete" do
 			end
 			
 		else
-			erb :"register/err_delete_account"
+			erb :"users/err_delete_account"
 		end
 		
 	else
@@ -279,7 +279,7 @@ end
 
 get "/sauth/apps/new" do
 	if session["current_user"]
-		erb :"register/newapp"
+		erb :"applications/newapp"
 	else
 		redirect "sauth/sessions/new"
 	end
@@ -297,7 +297,7 @@ post "/sauth/apps" do
 			settings.logger.info("New application				#{@app.name}")
 			redirect "/sauth/users/#{session["current_user"]}"
 		else
-			erb :"register/newapp"
+			erb :"applications/newapp"
 		end
 		
 	else
@@ -340,7 +340,7 @@ get "/sauth/apps/:app_name/delete" do
 			@users = User.where(:admin => false)
 		end
 		
-		erb :"sessions/list"
+		erb :"users/list"
 		
 	else
 		redirect "sauth/sessions/new"
@@ -378,7 +378,7 @@ get "/sauth/uses/:app_name/delete" do
 			@users = User.where(:admin => false)
 		end
 		
-		erb :"sessions/list"
+		erb :"users/list"
 	else
 		redirect "sauth/sessions/new"
 	end

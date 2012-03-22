@@ -11,6 +11,8 @@
 			<li><%= field %> <%= errs.join(' and ') %></li>
 		<% end %>
 	</ul>
+<% else %>
+	<p>Please enter your login and password to log in</p>
 <% end %>
 
 <form action="/sauth/sessions" method="post">

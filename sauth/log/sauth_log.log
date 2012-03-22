@@ -291,3 +291,26 @@ I, [2012-03-22T22:30:31.331490 #3533]  INFO -- : [Session]			toto connected
 I, [2012-03-22T22:30:31.339654 #3533]  INFO -- : [Session]			 disconnected
 I, [2012-03-22T22:30:31.359487 #3533]  INFO -- : New application				app1
 I, [2012-03-22T22:30:31.366720 #3533]  INFO -- : Application deleted			app1
+I, [2012-03-22T22:39:21.071276 #3679]  INFO -- : [Session]			toto connected
+I, [2012-03-22T22:39:23.386306 #3679]  INFO -- : User deleted					toto
+I, [2012-03-22T22:39:23.386491 #3679]  INFO -- : [Session]			toto disconnected
+I, [2012-03-22T22:39:28.028391 #3679]  INFO -- : [Session]			root connected
+I, [2012-03-22T22:39:32.553524 #3679]  INFO -- : [Session]			root disconnected
+I, [2012-03-22T22:53:53.567820 #3900]  INFO -- : [Session]			root connected
+I, [2012-03-22T22:53:55.287304 #3900]  INFO -- : [Session]			root disconnected
+I, [2012-03-22T23:11:18.103420 #4244]  INFO -- : Account creation				toto
+I, [2012-03-22T23:11:18.103656 #4244]  INFO -- : [Session]			toto disconnected
+I, [2012-03-22T23:11:18.111062 #4244]  INFO -- : User deleted					toto
+I, [2012-03-22T23:11:18.111204 #4244]  INFO -- : [Session]			toto disconnected
+I, [2012-03-22T23:11:18.131959 #4244]  INFO -- : [Session]			toto connected
+I, [2012-03-22T23:11:18.138791 #4244]  INFO -- : [Session]			 disconnected
+I, [2012-03-22T23:11:18.145360 #4244]  INFO -- : New application				app1
+I, [2012-03-22T23:11:18.172953 #4244]  INFO -- : Application deleted			app1
+I, [2012-03-22T23:11:28.701436 #4247]  INFO -- : Account creation				toto
+I, [2012-03-22T23:11:28.701617 #4247]  INFO -- : [Session]			toto disconnected
+I, [2012-03-22T23:11:28.709427 #4247]  INFO -- : User deleted					toto
+I, [2012-03-22T23:11:28.709567 #4247]  INFO -- : [Session]			toto disconnected
+I, [2012-03-22T23:11:28.730432 #4247]  INFO -- : [Session]			toto connected
+I, [2012-03-22T23:11:28.737142 #4247]  INFO -- : [Session]			 disconnected
+I, [2012-03-22T23:11:28.743881 #4247]  INFO -- : New application				app1
+I, [2012-03-22T23:11:28.772041 #4247]  INFO -- : Application deleted			app1

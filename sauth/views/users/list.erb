@@ -1,0 +1,59 @@
+<h1>Welcome <%= @user.login %> !</h1>
+
+<%if @error %>
+	<p><%=@error%></p>
+<%end%>
+
+
+
+<div class="listappown">
+<% if @apps_own && !@apps_own.empty? %>
+	<p>List of applications you own:</p>
+	<ul>
+		<% @apps_own.each do |ao| %>
+			<li><%=ao.name%> (<%=ao.url%>)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="/sauth/apps/<%=ao.name%>/delete"
+				onclick="return(confirm('Do you really want to delete this application ?'));">Delete</a></li>
+		<% end %>
+	</ul>
+<%else%>
+	<p>You have created no application.</p>
+<%end%>
+</div>
+
+
+<div class="listappuse">
+<% if @apps_linked && !@apps_linked.empty? %>
+	<p>List of applications using your account:</p>
+	<ul>
+		<% @apps_linked.each do |al| %>
+			<li><%=al.name%> (<%=al.url%>)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="/sauth/uses/<%=al.name%>/delete"
+				onclick="return(confirm('Do you really want to delete this use ?'));">Delete</a></li>
+		<% end %>
+	</ul>
+<%else%>
+	<p>No application uses your account.</p>
+<%end%>
+</div>
+
+
+
+<% if @users %>
+	<div class="listusers">
+		<p>List of users:</p>
+		<ul>
+			<% @users.each do |u| %>
+				<li><%=u.login%>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="/sauth/users/<%=u.login%>/delete" 
+					onclick="return(confirm('Do you really want to delete this account ?'));">Delete</a></li>
+			<% end %>
+		</ul>
+	</div>
+<%end%>
+
+
+
+<a href="/sauth/apps/new">Register a new application</a><br/>
+<% if @user && !@user.admin %>
+	<a href="/sauth/users/<%=@user.login%>/delete" onclick="return(confirm('Do you really want to delete this account ?'));">Delete your account</a><br/>
+<% end %>
+<a href="/sauth/sessions/delete">Disconnect</a>
+
