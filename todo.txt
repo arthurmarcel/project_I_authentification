@@ -1,7 +1,0 @@
-- Css (hyperliens, boutons delete)
-- README
-- Gemfile
-- Formulaires plus accueillants
-- Réorganiser erbs
-- Renommer client -> app, auth.rb -> sauth.rb
-
