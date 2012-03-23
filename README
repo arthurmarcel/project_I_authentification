@@ -1,10 +1,10 @@
-##################################################################################################################
-##################################################################################################################
-#																												 #
-#												PROJECT AUTHENTICATION											 #
-#																												 #
-##################################################################################################################
-##################################################################################################################
+#################################################################
+#################################################################
+#																#
+#					PROJECT AUTHENTICATION						#
+#																#
+#################################################################
+#################################################################
 
 
 
@@ -21,6 +21,8 @@ The projects is divided in three directories :
 	- app1 : an application
 	- app1 : an other application (almost the same)
 	
+To see the complete architecture, go the end of the file. 	
+	
 
 
 ##################################################################################################################
@@ -28,9 +30,9 @@ The projects is divided in three directories :
 ##################################################################################################################
 To check the validity of the different parts, just use these commands
 
-		For "sauth"       -      For "app1"      -      For "app2"
-	
-	   	 cd sauth                 cd app1                cd app2
+	- For "sauth" : cd sauth
+	- For "app1" : cd app1
+	- For "app2" : cd app2
    	 
 	Then: rspec spec/* --format documentation 
  
@@ -41,23 +43,21 @@ To check the validity of the different parts, just use these commands
 ################################################################################################################## 
 To run the different services, use the command below
 	
-		For "sauth"           -           For "app1"           -           For "app2"
-	
-	   	 cd sauth     					   cd app1      					cd app2
-	   	 
-		ruby sauth.rb					 ruby app1.rb					  ruby app2.rb
-	 
+	- For "sauth" : cd sauth, ruby sauth.rb
+	- For "app1" : cd app1, ruby app1.rb
+	- For "app2" : cd app2, ruby app2.rb							 					  
+
 
 
 ##################################################################################################################
 #	Use the services																							 #
 ##################################################################################################################
 To use these services, you need to run your browser and uses the adresses below
-	 
-			     For "sauth"                  -            For "app1"            -          For "app2"
 
-	 localhost:4567/sauth/sessions/new     	    	 localhost:5678/app1.fr   	      localhost:6789/app2.fr
-	 
+	- For "sauth" : localhost:4567/sauth/sessions/new
+	- For "app1" : localhost:5678/app1.fr
+	- For "app2" : localhost:6789/app2.fr
+
 
 
 ##################################################################################################################
@@ -123,17 +123,28 @@ In your application code, when you send an authentication request to the sauth, 
 If you want to test the different functionnalities of the services, just navigate on it.
 Have a look to the short list below to find the main pages of the different services :
 	* Sauth
-		- Register a new user						 localhost:4567/sauth/users/new 		
-		- Open a session 							 localhost:4567/sauth/sessions/new
-		- See your personnal elements				 localhost:4567/sauth/users/<username>
+		- Register a new user		
+			localhost:4567/sauth/users/new 	
+			 	
+		- Open a session
+			localhost:4567/sauth/sessions/new
+			
+		- See your personnal elements
+			localhost:4567/sauth/users/<username>
 		
 	* App1
-		- Index page								 localhost:5678/app1.fr	
-		- Protected area							 localhost:5678/app1.fr/protected
+		- Index page
+			localhost:5678/app1.fr
+			
+		- Protected area
+			localhost:5678/app1.fr/protected
 		
 	* App2
-		- Index page								 localhost:6789/app2.fr	
-		- Protected area							 localhost:6789/app2.fr/protected
+		- Index page
+			localhost:6789/app2.fr
+			
+		- Protected area
+			localhost:6789/app2.fr/protected
 
 
 
@@ -177,8 +188,14 @@ Here is the structure of the project_I_authentification repository :
 │   │   └── layout.erb
 │   └── www
 │       ├── img
-│       │   ├── blue.png
-│       │   └── logo.png
+│       │   ├── delete.png
+│       │   ├── err.png
+│       │   ├── footer.png
+│       │   ├── header.png
+│       │   ├── header.xcf
+│       │   ├── puce.png
+│       │   ├── splitter.png
+│       │   └── star.png
 │       └── style.css
 ├── app2
 │   ├── app2.rb
@@ -197,8 +214,14 @@ Here is the structure of the project_I_authentification repository :
 │   │   └── layout.erb
 │   └── www
 │       ├── img
-│       │   ├── blue.png
-│       │   └── logo.png
+│       │   ├── delete.png
+│       │   ├── err.png
+│       │   ├── footer.png
+│       │   ├── header.png
+│       │   ├── header.xcf
+│       │   ├── puce.png
+│       │   ├── splitter.png
+│       │   └── star.png
 │       └── style.css
 ├── projet_partie_authentification.pdf
 ├── README
@@ -243,6 +266,12 @@ Here is the structure of the project_I_authentification repository :
     │       └── register.erb
     └── www
         ├── img
-        │   ├── blue.png
-        │   └── logo.png
+        │   ├── app.png
+        │   ├── delete.png
+        │   ├── err.png
+        │   ├── footer.png
+        │   ├── header.png
+        │   ├── link.png
+        │   ├── splitter.png
+        │   └── user.png
         └── style.css
