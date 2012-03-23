@@ -1,27 +1,77 @@
-body
-{
-	font-family: Georgia, sans-serif;
-	width: 75%;
-	margin: auto;
-}
-
 /* Header */
 header
 {
 	padding-bottom: 10px;
-	background-image: -moz-linear-gradient(top, #000000, #ffffff); /* FF3.6 */
-	background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #000000), color-stop(1, #ffffff)); /* Safari 4+, Chrome 2+ */
-	background-image: -webkit-linear-gradient(top, #000000, #ffffff); /* Safari 5.1+, Chrome 10+ */
-	background-image: -o-linear-gradient(top, #000000, #ffffff); /* Opera 11.1+ */
-	background-image: -ms-linear-gradient(top, #000000, #ffffff); /* IE10+ */
-	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#000000', endColorstr='#ffffff'); /* IE6,IE7 */
-	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#000000', endColorstr='#ffffff')"; /* IE8+ */
-	background-image: linear-gradient(top, #000000, #ffffff);
+	background: url('img/splitter.png') repeat-x bottom;
 	margin-bottom: 10px;
-	text-align: center;
 }
 
 #logo
 {
-	width: 70%;
+	width: 100%;
+}
+
+
+
+/* Footer */
+footer
+{
+	background:  url('img/splitter.png') repeat-x top;
+	padding-top: 10px;
+	margin-top: 40px;
+}
+
+#footer_img
+{
+	width: 100%;
+}
+
+
+
+/* Body */
+body
+{
+	font: 16px Georgia;
+	width: 75%;
+	margin: auto;
+}
+
+.delete_img
+{
+	width: 1%;
+	height: 1%;
+	margin-left: 10px;
+}
+
+h1
+{
+	font: bold 28px Georgia;
+}
+
+a
+{
+	text-decoration: none;
+	color: blue;
+}
+
+a:hover 
+{
+    text-decoration: underline;
+}
+    
+li
+{
+	line-height:180%;
+	list-style-type: none;
+}
+
+.actions input
+{
+	font-weight: bold;
+	margin-top: 2%;
+}
+
+.field
+{
+	margin-top: 1%;
 }

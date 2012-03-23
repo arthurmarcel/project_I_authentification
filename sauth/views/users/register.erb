@@ -24,7 +24,10 @@
 			<p>Register failed for the next reasons :</p>
 			<ul>
 				<% @errs.each do |field, err| %>
-					<li><%= field %> <%= err.join(' and ') %></li>
+					<li>
+						<img src="/img/err.png" alt="puce" align="absmiddle" style="padding-right:10px;padding-top:1px;" />
+						<%= field %> <%= err.join(' and ') %>
+					</li>
 				<% end %>
 			</ul>
 			
@@ -49,6 +52,6 @@
   </div>
    
   <div class="actions">
-    <input name="commit" type="submit" value="Create user account" />
+    <input name="commit" type="submit" value="Create user account"/>
   </div>
 </form>

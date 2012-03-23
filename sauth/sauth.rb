@@ -185,7 +185,7 @@ get "/sauth/sessions/new" do
 			@app = params["app"]
 			@origin = params["origin"]
 			@secret = params["secret"]
-			@msg = "Please log in sauth to access #{params["app"]}"
+			@msg = "Please log in sauth to access #{params["app"]} protected area"
 		end
 		erb :"sessions/new"
 	else
@@ -219,10 +219,10 @@ post "/sauth/sessions" do
 			end
 		end
 	
-		u = User.find_by_login(params["login"])
+		ret = User.authenticate(params["login"], params["password"])
 	
-		if u && u.authenticate(params["password"])
-			session["current_user"] = u.login
+		if ret[:ok]
+			session["current_user"] = params["login"]
 			settings.logger.info("[Session]			#{session["current_user"]} connected")
 			
 			if a
@@ -239,7 +239,7 @@ post "/sauth/sessions" do
 				redirect "#{url}"
 				
 			else
-				redirect "/sauth/users/#{u.login}"
+				redirect "/sauth/users/#{session["current_user"]}"
 			end
 			
 		else
@@ -249,12 +249,10 @@ post "/sauth/sessions" do
 				@secret = params["secret"]
 			end
 			
-			if u
-				@login = params["login"]
-				@msg = "Error: bad password"
-				
-			else
-				@msg = "Error: user not found"
+			@errors = ret[:errs]
+			
+			if !@errors[:login]
+				@login = params["login"];
 			end
 			
 			erb :"sessions/new"

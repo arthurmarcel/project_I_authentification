@@ -76,7 +76,7 @@ When starting the authentication service, you will already have
 #	Registering an application																					 #
 ##################################################################################################################
 If you want to delete an application and then to register it again, you will be asked for a public key.
-You must give this RSA key to the sauth to be able to communicate with it safely.
+You must give your RSA public key to the sauth to be able to communicate with it safely.
 
 To get it, just move to the directory of your application. You will find a "key" directory containing two keys,
 one is public and the other is private. Just copy the content of the public key file in the right registration
@@ -86,7 +86,8 @@ eg: Registering app1
 Copy / Paste the content of app1/keys/app1_pub.pem
 
 When creating and registering a new application, you have to ensure that your application manage RSA to use sauth.
-Then just use these commands to create the keys
+
+Use these commands to create RSA keys
 	
 	irb
 	require 'openssl'
@@ -94,6 +95,26 @@ Then just use these commands to create the keys
 	open 'private_key.pem', 'w' do |io| io.write key.to_pem end
 	open 'public_key.pem', 'w' do |io| io.write key.public_key.to_pem end
 
+In your application code, when you send an authentication request to the sauth, you need to follow these steps:
+
+	- send a get request to http://localhost:4567/sauth/sessions/new?app=<your_app_name>&origin=<relative_page_path>&secret=<your_app_secret>
+		An example could be
+			* <your_app_name> = app1
+			* <relative_page_path> = /protected
+			* <your_app_secret> = AehJ6678lK08jGFj
+		
+		BE CAREFUL : The secret value must be encoded with your RSA private key, then with Base64.urlsafe_encode64 to have a url-safe string.
+		
+		eg:
+			- key = OpenSSL::PKey::RSA.new File.read <key_path>
+			- crypted = key.private_encrypt <your__secret_string>
+			- encoded = Base64.urlsafe_encode64(crypted)
+	
+	- when logged, the sauth will send a get request to the original page, you just have to check the result
+		* You should have the get parameter "opt" (meaning options)
+		* Use Base64.urlsafe_decode64 to decode the content of this parameter
+		* Use key.private_decrypt to decrypt what you decoded
+		* What you get is a string using this format "<login>;<your_app_secret>"
 
 
 ##################################################################################################################

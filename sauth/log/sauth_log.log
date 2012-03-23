@@ -341,3 +341,56 @@ I, [2012-03-23T00:03:04.154523 #4531]  INFO -- : [Session]			toto connected
 I, [2012-03-23T00:03:04.161400 #4531]  INFO -- : [Session]			 disconnected
 I, [2012-03-23T00:03:04.168132 #4531]  INFO -- : New application				app1
 I, [2012-03-23T00:03:04.201940 #4531]  INFO -- : Application deleted			app1
+I, [2012-03-23T16:40:13.934769 #2406]  INFO -- : [Session]			root connected
+I, [2012-03-23T16:45:42.288304 #2406]  INFO -- : [Session]			root disconnected
+I, [2012-03-23T17:00:34.643649 #2406]  INFO -- : [Session]			root connected
+I, [2012-03-23T17:00:34.775992 #2406]  INFO -- : New use				(root, app1)
+I, [2012-03-23T17:00:56.439406 #2406]  INFO -- : Use deleted				(root, app1)
+I, [2012-03-23T17:01:08.762001 #2406]  INFO -- : New use				(root, app2)
+I, [2012-03-23T17:01:16.371678 #2406]  INFO -- : [Session]			root disconnected
+I, [2012-03-23T17:01:22.396769 #2406]  INFO -- : [Session]			root connected
+I, [2012-03-23T17:01:37.551269 #2406]  INFO -- : Use deleted				(root, app2)
+I, [2012-03-23T17:13:52.608642 #2406]  INFO -- : New use				(root, app1)
+I, [2012-03-23T17:46:43.215156 #2406]  INFO -- : Use deleted				(root, app1)
+I, [2012-03-23T17:46:49.214664 #2406]  INFO -- : [Session]			root disconnected
+I, [2012-03-23T18:23:56.187534 #10621]  INFO -- : Account creation				toto
+I, [2012-03-23T18:23:56.187825 #10621]  INFO -- : [Session]			toto disconnected
+I, [2012-03-23T18:25:05.329941 #10621]  INFO -- : [Session]			toto disconnected
+I, [2012-03-23T18:27:55.548621 #10663]  INFO -- : [Session]			root connected
+I, [2012-03-23T18:28:17.698550 #10673]  INFO -- : [Session]			root connected
+I, [2012-03-23T18:28:41.079808 #10673]  INFO -- : [Session]			root disconnected
+I, [2012-03-23T18:28:44.250337 #10673]  INFO -- : [Session]			toto connected
+I, [2012-03-23T18:28:45.830342 #10673]  INFO -- : [Session]			toto disconnected
+I, [2012-03-23T18:28:48.622011 #10673]  INFO -- : [Session]			root connected
+I, [2012-03-23T18:35:48.461475 #10673]  INFO -- : [Session]			root disconnected
+I, [2012-03-23T18:35:51.546659 #10673]  INFO -- : [Session]			toto connected
+I, [2012-03-23T18:36:04.806032 #10673]  INFO -- : New application				app6
+I, [2012-03-23T18:36:25.299292 #10673]  INFO -- : New application				app7
+I, [2012-03-23T18:36:28.803856 #10673]  INFO -- : Application deleted			app7
+I, [2012-03-23T18:36:34.061441 #10673]  INFO -- : [Session]			toto disconnected
+I, [2012-03-23T18:36:47.115935 #10673]  INFO -- : [Session]			toto connected
+I, [2012-03-23T18:36:47.192846 #10673]  INFO -- : New use				(toto, app1)
+I, [2012-03-23T18:38:46.960145 #10673]  INFO -- : [Session]			toto disconnected
+I, [2012-03-23T18:38:57.216912 #10673]  INFO -- : [Session]			toto connected
+I, [2012-03-23T18:38:57.290081 #10673]  INFO -- : New use				(toto, app2)
+I, [2012-03-23T18:39:30.449733 #10673]  INFO -- : [Session]			toto disconnected
+I, [2012-03-23T18:40:55.615380 #10869]  INFO -- : [Session]			toto connected
+I, [2012-03-23T18:41:10.881571 #10869]  INFO -- : [Session]			toto disconnected
+I, [2012-03-23T18:41:55.594029 #10886]  INFO -- : [Session]			toto connected
+I, [2012-03-23T18:42:00.011007 #10886]  INFO -- : Use deleted				(toto, app2)
+I, [2012-03-23T18:42:01.793609 #10886]  INFO -- : [Session]			toto disconnected
+I, [2012-03-23T18:42:04.737811 #10886]  INFO -- : [Session]			root connected
+I, [2012-03-23T18:42:12.390548 #10886]  INFO -- : [Session]			root disconnected
+I, [2012-03-23T18:42:16.656138 #10886]  INFO -- : [Session]			toto connected
+I, [2012-03-23T18:42:30.361954 #10886]  INFO -- : New application				app7
+I, [2012-03-23T18:42:31.760689 #10886]  INFO -- : [Session]			toto disconnected
+I, [2012-03-23T18:42:39.289136 #10886]  INFO -- : [Session]			root connected
+I, [2012-03-23T18:43:51.451377 #10886]  INFO -- : Application deleted			app7
+I, [2012-03-23T18:43:53.201008 #10886]  INFO -- : [Session]			root disconnected
+I, [2012-03-23T18:43:56.028790 #10886]  INFO -- : [Session]			toto connected
+I, [2012-03-23T18:43:58.184487 #10886]  INFO -- : [Session]			toto disconnected
+I, [2012-03-23T18:44:01.791077 #10886]  INFO -- : [Session]			root connected
+I, [2012-03-23T18:44:04.942070 #10886]  INFO -- : Use deleted				(0b9c2625dc21ef05f6ad4ddf47c5f203837aa32c, app1)
+I, [2012-03-23T18:44:04.982982 #10886]  INFO -- : Application deleted			app6
+I, [2012-03-23T18:44:04.992915 #10886]  INFO -- : User deleted					toto
+I, [2012-03-23T18:44:12.392716 #10886]  INFO -- : [Session]			root disconnected

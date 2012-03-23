@@ -57,8 +57,16 @@ class User < ActiveRecord::Base
 	
 	
 	
-	def authenticate(pass)
-		return password == User.encode_pass(pass)
+	def self.authenticate(login, pass)
+		if User.find_by_login(login)
+			if User.find_by_login(login).password == User.encode_pass(pass)
+				return {:ok => true}
+			else
+				return {:ok => false, :errs => {:password => "is wrong"}}
+			end
+		else
+			return {:ok => false, :errs => {:login => "not found"}}
+		end
 	end
 	
 	
