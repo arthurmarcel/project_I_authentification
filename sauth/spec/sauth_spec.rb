@@ -35,10 +35,7 @@ describe "sauth service" do
 				end
 			
 				it "should create the user, redirect to the user page and open a session" do
-					@user.stub(:save){true}
-					@user.stub(:password){"mdp"}
-					@user.stub(:login){"toto"}
-					@user.stub(:admin){false}
+					@user.stub(:save => true, :password => "mdp", :login => "toto", :admin => false)
 				
 					@user.should_receive(:save)
 				
@@ -73,10 +70,7 @@ describe "sauth service" do
 			context "logged" do
 				before(:each) do				
 					@user = double("user")
-					@user.stub(:admin){false}
-					@user.stub(:id){35000}
-					@user.stub(:delete){true}
-					@user.stub(:save){true}
+					@user.stub(:admin => false, :id => 35000, :delete => true, :save => true)
 					@empty_array = []
 					@user.stub(:delete_linked_uses){@empty_array}
 					@user.stub(:delete_owned_apps){@empty_array}				
@@ -86,9 +80,9 @@ describe "sauth service" do
 		
 				it "should accept to delete if logged with the good account, then close the session and redirect to /sessions/new" do
 					@user.stub(:login){"toto"}
+					@user.stub(:delete_complete){true}
 												
-					@user.should_receive(:delete)
-					@user.should_receive(:save)
+					@user.should_receive(:delete_complete)
 							
 					get "/sauth/users/toto/delete", {}, "rack.session" => {"current_user" => "toto"}
 					last_response.status.should == 200
@@ -118,12 +112,9 @@ describe "sauth service" do
 			context "logged" do
 				before(:each) do				
 					@user = double(User)
-					@user.stub(:password){"mdp"}
-					@user.stub(:login){"toto"}
-					@user.stub(:admin){false}
-					@user.stub(:id){1}
 					@user.stub(:find_apps_own){nil}
 					@user.stub(:find_apps_use){nil}
+					@user.stub(:password => "mdp", :login => "toto", :admin => false, :id => 1)
 					User.stub(:find_by_login){@user}
 				end
 				
@@ -174,15 +165,15 @@ describe "sauth service" do
 		describe "posting a request to open a session" do
 			before(:each) do
 				@user = double(User)
-				@user.stub(:password){"tata"}
-				@user.stub(:login){"toto"}
-				@user.stub(:authenticate){true}
+				@user.stub(:password => "tata", :login => "toto", :authenticate => true)
 				User.stub(:find_by_login){@user}
 				User.stub(:encode_pass){"tata"}
 				@params = {"login" => "toto", "password" => "tata"}
 			end
 			
-			it "should open a session if not logged, and redirect to /sauth/users/:login if it's not an application request" do				
+			it "should open a session if not logged, and redirect to /sauth/users/:login if it's not an application request" do		
+				User.stub(:authenticate){{:ok => true}}
+					
 				post "/sauth/sessions", @params
 				last_response.status.should == 302
 				last_response.headers["Location"].should == "http://example.org/sauth/users/toto"
@@ -190,7 +181,7 @@ describe "sauth service" do
 			end
 		
 			it "should reload the form if errors" do
-				@user.stub(:authenticate){false}
+				User.stub(:authenticate){{:ok => false, :errs => {:login => "not found"}}}
 				
 				post "/sauth/sessions", @params
 				last_response.status.should == 200
@@ -285,11 +276,9 @@ describe "sauth service" do
 			context "logged" do
 				before(:each) do
 					@user = double("user")
-					@user.stub(:id){35000}
-					@user.stub(:admin){false}
-					@user.stub(:login){"toto"}
 					@user.stub(:find_apps_own){nil}
 					@user.stub(:find_apps_use){nil}
+					@user.stub(:id => 35000, :admin => false, :login => "toto")
 					User.stub(:find_by_login){@user}
 					
 					@app = double("application")
@@ -297,16 +286,12 @@ describe "sauth service" do
 				end
 				
 				it "should accept to delete the application if you own it" do			
-					@app.stub(:user_id){35000}
-					@app.stub(:id){45000}
-					@app.stub(:name){"app1"}
-					@app.stub(:delete){true}
-					@app.stub(:save){true}
+					@app.stub(:user_id => 35000, :id => 45000, :name => "app1", :delete => true, :save => true)
 					@empty_array = []
-					@app.stub(:delete_linked_uses){@empty_array}					
+					@app.stub(:delete_linked_uses){@empty_array}	
+					@app.stub(:delete_complete){true}	
 					
-					@app.should_receive(:delete)	
-					@app.should_receive(:save)			
+					@app.should_receive(:delete_complete)			
 					
 					get "/sauth/apps/app1/delete", {}, "rack.session" => {"current_user" => "toto"} 
 					last_response.status.should == 200
@@ -351,9 +336,7 @@ describe "sauth service" do
 			context "logged" do
 				before(:each) do
 					@user = double("user")
-					@user.stub(:id){35000}
-					@user.stub(:admin){false}
-					@user.stub(:login){"toto"}
+					@user.stub(:id => 35000, :admin => false, :login => "toto")
 					User.stub(:find_by_login){@user}
 					
 					@app = double("application")
