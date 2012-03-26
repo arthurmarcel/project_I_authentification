@@ -55,9 +55,11 @@
 				<li>
 					<img src="/img/user.png" alt="puce" align="absmiddle" style="padding-right:10px;padding-top:1px;" />
 					<%=u.login%>
-					<a href="/sauth/users/<%=u.login%>/delete" onclick="return(confirm('Do you really want to delete this account ?'));">
-						<img src="/img/delete.png" alt="delete" class="delete_img" />
-					</a>
+					<% if !u.admin %>
+						<a href="/sauth/users/<%=u.login%>/delete" onclick="return(confirm('Do you really want to delete this account ?'));">
+							<img src="/img/delete.png" alt="delete" class="delete_img" />
+						</a>
+					<% end %>
 				</li>
 			<% end %>
 		</ul>

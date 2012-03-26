@@ -46,14 +46,30 @@ helpers do
 		url = "#{app.url}/#{origin}?opt=#{encoded}"
 		return url
 	end
+	
+	def connected
+		return !session["current_user"].nil?
+	end
+	
+	def current_user
+		return session["current_user"]
+	end
+	
+	def connect(login)
+		session["current_user"] = login
+	end
+	
+	def disconnect
+		session["current_user"] = nil
+	end
 end
 
 
 
 
 get "/sauth/users" do
-	if session["current_user"]
-		redirect "/sauth/users/#{session["current_user"]}"
+	if connected
+		redirect "/sauth/users/#{current_user}"
 	else
 		redirect "/sauth/sessions/new"
 	end
@@ -63,10 +79,10 @@ end
 
 
 get "/sauth/users/new" do
-	if !session["current_user"]
-		erb :"users/register"
+	if connected
+		redirect "/sauth/users/#{current_user}"
 	else
-		redirect "/sauth/users/#{session["current_user"]}"
+		erb :"users/register"
 	end
 end
 
@@ -74,24 +90,24 @@ end
 
 
 post "/sauth/users" do
-	if !session["current_user"]
+	if connected
+		redirect "/sauth/users/#{current_user}"
+	else
 		@user = User.new({"login"=>params["login"], "password"=>params["password"]})
 		@log = params["login"]
 		@pass = params["password"]
 		@conf = params["password_confirmation"]
 		
 		if params["password"] == params["password_confirmation"] && @user.save			
-			session["current_user"] = @user.login
+			connect(@user.login)
 			
 			settings.logger.info("Account creation				#{@user.login}")
-			settings.logger.info("[Session]			#{session["current_user"]} disconnected")
+			settings.logger.info("[Session]			#{current_user} disconnected")
 			
 			redirect "sauth/users/#{@user.login}"
 		else		
 			erb :"users/register"
 		end
-	else
-		redirect "/sauth/users/#{session["current_user"]}"
 	end
 end
 
@@ -99,20 +115,20 @@ end
 
 
 get "/sauth/users/:login_user" do
-	if session["current_user"]
-		@user = User.find_by_login(session["current_user"])
+	if connected
+		@user = User.find_by_login(current_user)
 		
-		if session["current_user"] == params[:login_user]
+		if current_user == params[:login_user]
 			@apps_own = @user.find_apps_own
 			@apps_linked = @user.find_apps_use
 			
 			if @user.admin
-				@users = User.where(:admin => false)
+				@users = User.find(:all)
 			end
 			
 			erb :"users/list"
 		else
-			redirect "/sauth/users/#{session["current_user"]}"
+			redirect "/sauth/users/#{current_user}"
 		end
 		
 	else
@@ -124,39 +140,28 @@ end
 
 
 get "/sauth/users/:login/delete" do
-	if session["current_user"] 
-		@login = params[:login]
+	if connected
+		@login_to_delete = params[:login]
 		
-		if User.find_by_login(@login).admin
-			redirect "/sauth/users/#{session["current_user"]}"
+		if	!User.find_by_login(@login_to_delete)
+			redirect "/sauth/users/#{current_user}"
 			
-		elsif (session["current_user"] == @login) || (User.find_by_login(session["current_user"]).admin) 
-			user = User.find_by_login(@login)
-			deleter = User.find_by_login(session["current_user"])
+		elsif User.find_by_login(@login_to_delete).admin
+			redirect "/sauth/users/#{current_user}"
 			
-			deleted_uses = user.delete_linked_uses
-			deleted_uses.each do |use|
-				settings.logger.info("Use deleted				#{use}")
-			end
+		elsif (current_user == @login_to_delete) || (User.find_by_login(current_user).admin) 
+			user = User.find_by_login(@login_to_delete)
+			deleter = User.find_by_login(current_user)
 			
-			deleted_apps = user.delete_owned_apps
-			deleted_apps.each do |a|
-				settings.logger.info("Application deleted			#{a}")
-			end
-	
-			
-			user.delete
-			user.save
-			
-			settings.logger.info("User deleted					#{user.login}")
+			user.delete_complete(settings.logger)
 			
 			@msg = "Account successuly deleted !"
 			
 			if deleter.admin
-				redirect "/sauth/users/#{session["current_user"]}"
+				redirect "/sauth/users/#{current_user}"
 			else
-				settings.logger.info("[Session]			#{session["current_user"]} disconnected")
-				session["current_user"] = nil
+				settings.logger.info("[Session]			#{current_user} disconnected")
+				disconnect
 				erb :"sessions/new"
 			end
 			
@@ -180,7 +185,7 @@ get "/sauth/sessions/new" do
 		end
 	end
 	
-	if !session["current_user"]
+	if !connected
 		if a
 			@app = params["app"]
 			@origin = params["origin"]
@@ -190,19 +195,19 @@ get "/sauth/sessions/new" do
 		erb :"sessions/new"
 	else
 		if a
-			url = find_url_app_redirect(a, params["origin"], params["secret"], session["current_user"])
+			url = find_url_app_redirect(a, params["origin"], params["secret"], current_user)
 			
 			us = Use.new
-			us.user_id = User.find_by_login(session["current_user"]).id
+			us.user_id = User.find_by_login(current_user).id
 			us.application_id = a.id
 			
 			if us.save
-				settings.logger.info("New use				(#{User.find_by_login(session["current_user"]).login}, #{a.name})")
+				settings.logger.info("New use				(#{User.find_by_login(current_user).login}, #{a.name})")
 			end
 			
 			redirect "#{url}"
 		else
-			redirect "/sauth/users/#{session["current_user"]}"
+			redirect "/sauth/users/#{current_user}"
 		end
 	end
 end
@@ -211,7 +216,7 @@ end
 
 
 post "/sauth/sessions" do
-	if !session["current_user"]
+	if !connected
 		if params["app"] && params["origin"] && params["secret"]
 			a = Application.find_by_name(params["app"])
 			if a.nil?
@@ -222,24 +227,24 @@ post "/sauth/sessions" do
 		ret = User.authenticate(params["login"], params["password"])
 	
 		if ret[:ok]
-			session["current_user"] = params["login"]
-			settings.logger.info("[Session]			#{session["current_user"]} connected")
+			connect(params["login"])
+			settings.logger.info("[Session]			#{current_user} connected")
 			
 			if a
-				url = find_url_app_redirect(a, params["origin"], params["secret"], session["current_user"])
+				url = find_url_app_redirect(a, params["origin"], params["secret"], current_user)
 			
 				us = Use.new
-				us.user_id = User.find_by_login(session["current_user"]).id
+				us.user_id = User.find_by_login(current_user).id
 				us.application_id = a.id
 				
 				if us.save
-					settings.logger.info("New use				(#{User.find_by_login(session["current_user"]).login}, #{a.name})")
+					settings.logger.info("New use				(#{User.find_by_login(current_user).login}, #{a.name})")
 				end
 			
 				redirect "#{url}"
 				
 			else
-				redirect "/sauth/users/#{session["current_user"]}"
+				redirect "/sauth/users/#{current_user}"
 			end
 			
 		else
@@ -259,7 +264,7 @@ post "/sauth/sessions" do
 		end
 		
 	else
-		redirect "/sauth/users/#{session["current_user"]}"
+		redirect "/sauth/users/#{current_user}"
 	end
 end
 
@@ -267,8 +272,8 @@ end
 
 
 get "/sauth/sessions/delete" do
-	settings.logger.info("[Session]			#{session["current_user"]} disconnected")
-	session["current_user"] = nil
+	settings.logger.info("[Session]			#{current_user} disconnected")
+	disconnect
 	redirect "sauth/sessions/new"
 end
 
@@ -276,7 +281,7 @@ end
 
 
 get "/sauth/apps/new" do
-	if session["current_user"]
+	if connected
 		erb :"applications/newapp"
 	else
 		redirect "sauth/sessions/new"
@@ -287,13 +292,13 @@ end
 
 
 post "/sauth/apps" do
-	if session["current_user"]	
-		uid = User.find_by_login(session["current_user"]).id
+	if connected
+		uid = User.find_by_login(current_user).id
 		@app = Application.new({"name"=>params["name"], "url"=>params["url"], "pubkey"=>params["pubkey"], "user_id"=>uid})
 		
 		if @app.save
 			settings.logger.info("New application				#{@app.name}")
-			redirect "/sauth/users/#{session["current_user"]}"
+			redirect "/sauth/users/#{current_user}"
 		else
 			erb :"applications/newapp"
 		end
@@ -307,22 +312,13 @@ end
 
 
 get "/sauth/apps/:app_name/delete" do
-	if session["current_user"]
-		@user = User.find_by_login(session["current_user"])
+	if connected
+		@user = User.find_by_login(current_user)
 		app = Application.find_by_name(params[:app_name])
 		
 		if app		
 			if app.user_id == @user.id || @user.admin
-				
-				deleted_uses = app.delete_linked_uses
-				deleted_uses.each do |use|
-					settings.logger.info("Use deleted				#{use}")
-				end
-				
-				app.delete
-				app.save
-				settings.logger.info("Application deleted			#{app.name}")
-				
+				app.delete_complete(settings.logger)
 			else
 				@error = "Error: This application is not yours"
 			end
@@ -335,7 +331,7 @@ get "/sauth/apps/:app_name/delete" do
 		@apps_linked = @user.find_apps_use
 		
 		if @user.admin
-			@users = User.where(:admin => false)
+			@users = User.find(:all)
 		end
 		
 		erb :"users/list"
@@ -349,8 +345,8 @@ end
 
 
 get "/sauth/uses/:app_name/delete" do
-	if session["current_user"]
-		@user = User.find_by_login(session["current_user"])	
+	if connected
+		@user = User.find_by_login(current_user)	
 		app = Application.find_by_name(params["app_name"])
 		
 		if app
@@ -373,7 +369,7 @@ get "/sauth/uses/:app_name/delete" do
 		@apps_linked = @user.find_apps_use
 		
 		if @user.admin
-			@users = User.where(:admin => false)
+			@users = User.find(:all)
 		end
 		
 		erb :"users/list"

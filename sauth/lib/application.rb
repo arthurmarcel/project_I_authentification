@@ -1,4 +1,5 @@
 require 'active_record'
+require 'logger'
 
 class Application < ActiveRecord::Base
 
@@ -55,16 +56,19 @@ class Application < ActiveRecord::Base
 		end
 	end
 	
-	def delete_linked_uses
-		uses_deleted = []
-		
+	def delete_complete(logger)
 		uses = Use.where(:application_id => id)
+		
 		uses.each do |u|
+					settings.logger.info("Use deleted				(#{User.find_by_id(u.user_id).login}, #{self[:name]})")
 					u.delete
 					u.save
-					uses_deleted.push("(#{User.find_by_id(u.user_id).login}, #{self[:name]})")
 		end
 		
-		return uses_deleted
+		settings.logger.info("Application deleted			#{self[:name]}")
+		delete
+		save
+		
+		return true
 	end
 end

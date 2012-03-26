@@ -1,5 +1,6 @@
 require 'digest/sha1'
 require 'active_record'
+require 'logger'
 
 class User < ActiveRecord::Base
 
@@ -40,21 +41,28 @@ class User < ActiveRecord::Base
 		return (not u.nil?) && (u.password == User.encode_pass(password))
 	end
 	
-	
-	
-	def delete_linked_uses
-		uses_deleted = []
-		
+	def delete_complete(logger)
 		uses = Use.where(:user_id => id)
+		
 		uses.each do |u|
 					u.delete
 					u.save
-					uses_deleted.push("(#{self[:password]}, #{(Application.find_by_id(u.application_id)).name})")
+					logger.info("Use deleted					(#{self[:login]}, #{(Application.find_by_id(u.application_id)).name})")
 		end
 		
-		return uses_deleted
+		apps = Application.where(:user_id => id)
+		apps.each do |a|
+					logger.info("Application deleted			#{a.name}")
+					a.delete
+					a.save	
+		end
+		
+		logger.info("User deleted					#{self[:login]}")
+		delete
+		save
+		
+		return true
 	end
-	
 	
 	
 	def self.authenticate(login, pass)
@@ -67,21 +75,6 @@ class User < ActiveRecord::Base
 		else
 			return {:ok => false, :errs => {:login => "not found"}}
 		end
-	end
-	
-	
-	
-	def delete_owned_apps
-		apps_deleted = []
-		
-		apps = Application.where(:user_id => id)
-		apps.each do |a|
-					a.delete
-					a.save
-					apps_deleted.push(a.name)
-		end
-		
-		return apps_deleted
 	end
 	
 
