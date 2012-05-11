@@ -1,0 +1,14 @@
+# Logfile created on 2012-04-25 20:59:37 +0200 by logger.rb/31641
+I, [2012-04-25T20:59:37.476563 #5423]  INFO -- : [Session]			root connected
+I, [2012-04-25T21:01:53.843728 #5423]  INFO -- : New application				blog
+I, [2012-04-25T21:02:41.086807 #5423]  INFO -- : [Session]			root disconnected
+I, [2012-04-25T21:03:24.416850 #5423]  INFO -- : [Session]			root connected
+I, [2012-04-25T21:03:24.529113 #5423]  INFO -- : New use				(root, blog)
+I, [2012-04-25T21:04:23.390165 #5423]  INFO -- : Use deleted				(root, blog)
+I, [2012-04-25T21:04:25.107166 #5423]  INFO -- : [Session]			root disconnected
+I, [2012-04-25T21:04:42.185368 #5423]  INFO -- : [Session]			root connected
+I, [2012-04-25T21:04:42.234123 #5423]  INFO -- : New use				(root, blog)
+I, [2012-04-25T21:12:18.297147 #5935]  INFO -- : Use deleted				(root, blog)
+I, [2012-04-25T21:12:18.977758 #5935]  INFO -- : [Session]			root disconnected
+I, [2012-04-25T21:12:30.028691 #5935]  INFO -- : [Session]			root connected
+I, [2012-04-25T21:12:30.101874 #5935]  INFO -- : New use				(root, blog)

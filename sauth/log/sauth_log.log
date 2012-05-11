@@ -1,167 +1,40 @@
-# Logfile created on 2012-03-26 13:13:20 +0200 by logger.rb/31641
-I, [2012-03-26T13:13:28.809527 #2800]  INFO -- : Account creation				toto
-I, [2012-03-26T13:13:28.809852 #2800]  INFO -- : [Session]			toto disconnected
-I, [2012-03-26T13:13:30.790506 #2800]  INFO -- : User deleted					toto
-I, [2012-03-26T13:13:30.853991 #2800]  INFO -- : [Session]			toto disconnected
-I, [2012-03-26T13:15:55.339475 #2848]  INFO -- : Account creation				toto
-I, [2012-03-26T13:15:55.339794 #2848]  INFO -- : [Session]			toto disconnected
-I, [2012-03-26T13:15:56.781247 #2848]  INFO -- : [Session]			toto disconnected
-I, [2012-03-26T13:15:59.667438 #2848]  INFO -- : [Session]			toto connected
-I, [2012-03-26T13:16:01.475527 #2848]  INFO -- : User deleted					toto
-I, [2012-03-26T13:16:01.521523 #2848]  INFO -- : [Session]			toto disconnected
-I, [2012-03-26T13:16:16.956639 #2848]  INFO -- : Account creation				toto
-I, [2012-03-26T13:16:16.957037 #2848]  INFO -- : [Session]			toto disconnected
-I, [2012-03-26T13:21:27.321387 #2931]  INFO -- : [Session]			toto disconnected
-I, [2012-03-26T13:21:33.857943 #2931]  INFO -- : Account creation				titi
-I, [2012-03-26T13:21:33.858236 #2931]  INFO -- : [Session]			titi disconnected
-I, [2012-03-26T13:21:53.937776 #2931]  INFO -- : User deleted					titi
-I, [2012-03-26T13:21:54.001938 #2931]  INFO -- : [Session]			titi disconnected
-I, [2012-03-26T13:21:56.612608 #2931]  INFO -- : [Session]			toto connected
-I, [2012-03-26T13:21:58.508399 #2931]  INFO -- : User deleted					toto
-I, [2012-03-26T13:21:58.550601 #2931]  INFO -- : [Session]			toto disconnected
-I, [2012-03-26T13:25:08.888728 #2982]  INFO -- : Account creation				toto
-I, [2012-03-26T13:25:08.888918 #2982]  INFO -- : [Session]			toto disconnected
-I, [2012-03-26T13:25:08.961963 #2982]  INFO -- : [Session]			toto connected
-I, [2012-03-26T13:25:08.964078 #2982]  INFO -- : [Session]			toto connected
-I, [2012-03-26T13:25:08.967494 #2982]  INFO -- : [Session]			 disconnected
-I, [2012-03-26T13:25:08.976926 #2982]  INFO -- : New application				app1
-I, [2012-03-26T13:25:18.160435 #2984]  INFO -- : Account creation				toto
-I, [2012-03-26T13:25:18.160594 #2984]  INFO -- : [Session]			toto disconnected
-I, [2012-03-26T13:25:18.249266 #2984]  INFO -- : [Session]			toto connected
-I, [2012-03-26T13:25:18.251570 #2984]  INFO -- : [Session]			toto connected
-I, [2012-03-26T13:25:18.255687 #2984]  INFO -- : [Session]			 disconnected
-I, [2012-03-26T13:25:18.263288 #2984]  INFO -- : New application				app1
-I, [2012-03-26T13:32:06.008730 #3023]  INFO -- : Account creation				toto
-I, [2012-03-26T13:32:06.008905 #3023]  INFO -- : [Session]			toto disconnected
-I, [2012-03-26T13:32:06.082224 #3023]  INFO -- : [Session]			toto connected
-I, [2012-03-26T13:32:06.084299 #3023]  INFO -- : [Session]			toto connected
-I, [2012-03-26T13:32:06.087652 #3023]  INFO -- : [Session]			 disconnected
-I, [2012-03-26T13:32:06.095229 #3023]  INFO -- : New application				app1
-I, [2012-03-26T13:32:10.864077 #3026]  INFO -- : Account creation				toto
-I, [2012-03-26T13:32:10.864247 #3026]  INFO -- : [Session]			toto disconnected
-I, [2012-03-26T13:32:10.951973 #3026]  INFO -- : [Session]			toto connected
-I, [2012-03-26T13:32:10.954172 #3026]  INFO -- : [Session]			toto connected
-I, [2012-03-26T13:32:10.957806 #3026]  INFO -- : [Session]			 disconnected
-I, [2012-03-26T13:32:10.964780 #3026]  INFO -- : New application				app1
-I, [2012-03-26T13:33:02.347773 #3034]  INFO -- : Account creation				toto
-I, [2012-03-26T13:33:02.347937 #3034]  INFO -- : [Session]			toto disconnected
-I, [2012-03-26T13:33:02.355448 #3034]  INFO -- : [Session]			toto disconnected
-I, [2012-03-26T13:33:02.390273 #3034]  INFO -- : [Session]			toto connected
-I, [2012-03-26T13:33:02.392650 #3034]  INFO -- : [Session]			toto connected
-I, [2012-03-26T13:33:02.396783 #3034]  INFO -- : [Session]			 disconnected
-I, [2012-03-26T13:33:02.417708 #3034]  INFO -- : New application				app1
-I, [2012-03-26T13:33:20.452147 #3040]  INFO -- : Account creation				toto
-I, [2012-03-26T13:33:20.452304 #3040]  INFO -- : [Session]			toto disconnected
-I, [2012-03-26T13:33:20.459810 #3040]  INFO -- : [Session]			toto disconnected
-I, [2012-03-26T13:33:20.494648 #3040]  INFO -- : [Session]			toto connected
-I, [2012-03-26T13:33:20.497181 #3040]  INFO -- : [Session]			toto connected
-I, [2012-03-26T13:33:20.501433 #3040]  INFO -- : [Session]			 disconnected
-I, [2012-03-26T13:33:20.521893 #3040]  INFO -- : New application				app1
-I, [2012-03-26T13:33:38.017943 #3044]  INFO -- : Account creation				toto
-I, [2012-03-26T13:33:38.018108 #3044]  INFO -- : [Session]			toto disconnected
-I, [2012-03-26T13:33:38.025983 #3044]  INFO -- : [Session]			toto disconnected
-I, [2012-03-26T13:33:38.061372 #3044]  INFO -- : [Session]			toto connected
-I, [2012-03-26T13:33:38.063918 #3044]  INFO -- : [Session]			toto connected
-I, [2012-03-26T13:33:38.067965 #3044]  INFO -- : [Session]			 disconnected
-I, [2012-03-26T13:33:38.089341 #3044]  INFO -- : New application				app1
-I, [2012-03-26T13:36:29.176404 #3060]  INFO -- : Account creation				toto
-I, [2012-03-26T13:36:29.176567 #3060]  INFO -- : [Session]			toto disconnected
-I, [2012-03-26T13:36:29.183862 #3060]  INFO -- : [Session]			toto disconnected
-I, [2012-03-26T13:36:29.218389 #3060]  INFO -- : [Session]			toto connected
-I, [2012-03-26T13:36:29.220815 #3060]  INFO -- : [Session]			toto connected
-I, [2012-03-26T13:36:29.224771 #3060]  INFO -- : [Session]			 disconnected
-I, [2012-03-26T13:36:29.245692 #3060]  INFO -- : New application				app1
-I, [2012-03-26T13:39:22.205957 #3083]  INFO -- : Account creation				toto
-I, [2012-03-26T13:39:22.206168 #3083]  INFO -- : [Session]			toto disconnected
-I, [2012-03-26T13:39:22.214497 #3083]  INFO -- : [Session]			toto disconnected
-I, [2012-03-26T13:39:22.254319 #3083]  INFO -- : [Session]			toto connected
-I, [2012-03-26T13:39:22.256999 #3083]  INFO -- : [Session]			toto connected
-I, [2012-03-26T13:39:22.261124 #3083]  INFO -- : [Session]			 disconnected
-I, [2012-03-26T13:39:22.285096 #3083]  INFO -- : New application				app1
-I, [2012-03-26T13:40:56.174092 #3092]  INFO -- : Account creation				toto
-I, [2012-03-26T13:40:56.174254 #3092]  INFO -- : [Session]			toto disconnected
-I, [2012-03-26T13:40:56.181626 #3092]  INFO -- : [Session]			toto disconnected
-I, [2012-03-26T13:40:56.307116 #3092]  INFO -- : [Session]			 disconnected
-I, [2012-03-26T13:40:56.314503 #3092]  INFO -- : New application				app1
-I, [2012-03-26T13:41:07.497271 #3094]  INFO -- : Account creation				toto
-I, [2012-03-26T13:41:07.497427 #3094]  INFO -- : [Session]			toto disconnected
-I, [2012-03-26T13:41:07.504792 #3094]  INFO -- : [Session]			toto disconnected
-I, [2012-03-26T13:41:07.646408 #3094]  INFO -- : [Session]			 disconnected
-I, [2012-03-26T13:41:07.653878 #3094]  INFO -- : New application				app1
-I, [2012-03-26T13:41:09.926271 #3096]  INFO -- : Account creation				toto
-I, [2012-03-26T13:41:09.926424 #3096]  INFO -- : [Session]			toto disconnected
-I, [2012-03-26T13:41:09.933751 #3096]  INFO -- : [Session]			toto disconnected
-I, [2012-03-26T13:41:10.079844 #3096]  INFO -- : [Session]			 disconnected
-I, [2012-03-26T13:41:10.087205 #3096]  INFO -- : New application				app1
-I, [2012-03-26T13:42:23.033730 #3101]  INFO -- : Account creation				toto
-I, [2012-03-26T13:42:23.033884 #3101]  INFO -- : [Session]			toto disconnected
-I, [2012-03-26T13:42:23.041277 #3101]  INFO -- : [Session]			toto disconnected
-I, [2012-03-26T13:42:23.189471 #3101]  INFO -- : [Session]			 disconnected
-I, [2012-03-26T13:42:23.197306 #3101]  INFO -- : New application				app1
-I, [2012-03-26T13:43:19.378051 #3106]  INFO -- : Account creation				toto
-I, [2012-03-26T13:43:19.378205 #3106]  INFO -- : [Session]			toto disconnected
-I, [2012-03-26T13:43:19.385697 #3106]  INFO -- : [Session]			toto disconnected
-I, [2012-03-26T13:43:19.526532 #3106]  INFO -- : [Session]			 disconnected
-I, [2012-03-26T13:43:19.533834 #3106]  INFO -- : New application				app1
-I, [2012-03-26T13:45:40.488039 #3118]  INFO -- : Account creation				toto
-I, [2012-03-26T13:45:40.488196 #3118]  INFO -- : [Session]			toto disconnected
-I, [2012-03-26T13:45:40.495634 #3118]  INFO -- : [Session]			toto disconnected
-I, [2012-03-26T13:45:40.530238 #3118]  INFO -- : [Session]			toto connected
-I, [2012-03-26T13:45:40.532676 #3118]  INFO -- : [Session]			toto connected
-I, [2012-03-26T13:45:40.536716 #3118]  INFO -- : [Session]			 disconnected
-I, [2012-03-26T13:45:40.556326 #3118]  INFO -- : New application				app1
-I, [2012-03-26T13:46:07.800915 #3124]  INFO -- : Account creation				toto
-I, [2012-03-26T13:46:07.801068 #3124]  INFO -- : [Session]			toto disconnected
-I, [2012-03-26T13:46:07.808437 #3124]  INFO -- : [Session]			toto disconnected
-I, [2012-03-26T13:46:07.842661 #3124]  INFO -- : [Session]			toto connected
-I, [2012-03-26T13:46:07.845579 #3124]  INFO -- : [Session]			toto connected
-I, [2012-03-26T13:46:07.849593 #3124]  INFO -- : [Session]			 disconnected
-I, [2012-03-26T13:46:07.869217 #3124]  INFO -- : New application				app1
-I, [2012-03-26T13:46:27.851794 #3130]  INFO -- : Account creation				toto
-I, [2012-03-26T13:46:27.851949 #3130]  INFO -- : [Session]			toto disconnected
-I, [2012-03-26T13:46:27.859442 #3130]  INFO -- : [Session]			toto disconnected
-I, [2012-03-26T13:46:27.897909 #3130]  INFO -- : [Session]			toto connected
-I, [2012-03-26T13:46:27.954862 #3130]  INFO -- : [Session]			 disconnected
-I, [2012-03-26T13:46:27.961550 #3130]  INFO -- : New application				app1
-I, [2012-03-26T13:47:23.648030 #3136]  INFO -- : Account creation				toto
-I, [2012-03-26T13:47:23.648187 #3136]  INFO -- : [Session]			toto disconnected
-I, [2012-03-26T13:47:23.655672 #3136]  INFO -- : [Session]			toto disconnected
-I, [2012-03-26T13:47:23.690797 #3136]  INFO -- : [Session]			toto connected
-I, [2012-03-26T13:47:23.710770 #3136]  INFO -- : [Session]			 disconnected
-I, [2012-03-26T13:47:23.718515 #3136]  INFO -- : New application				app1
-I, [2012-03-26T13:48:21.020012 #3142]  INFO -- : Account creation				toto
-I, [2012-03-26T13:48:21.020169 #3142]  INFO -- : [Session]			toto disconnected
-I, [2012-03-26T13:48:21.027688 #3142]  INFO -- : [Session]			toto disconnected
-I, [2012-03-26T13:48:21.067143 #3142]  INFO -- : [Session]			toto connected
-I, [2012-03-26T13:48:21.076146 #3142]  INFO -- : [Session]			 disconnected
-I, [2012-03-26T13:48:21.100090 #3142]  INFO -- : New application				app1
-I, [2012-03-26T13:52:16.505454 #3158]  INFO -- : Account creation				toto
-I, [2012-03-26T13:52:16.505622 #3158]  INFO -- : [Session]			toto disconnected
-I, [2012-03-26T13:52:16.513326 #3158]  INFO -- : [Session]			toto disconnected
-I, [2012-03-26T13:52:16.548527 #3158]  INFO -- : [Session]			toto connected
-I, [2012-03-26T13:52:16.557129 #3158]  INFO -- : [Session]			 disconnected
-I, [2012-03-26T13:52:16.578257 #3158]  INFO -- : New application				app1
-I, [2012-03-26T13:52:24.337803 #3161]  INFO -- : Account creation				toto
-I, [2012-03-26T13:52:24.337954 #3161]  INFO -- : [Session]			toto disconnected
-I, [2012-03-26T13:52:24.345394 #3161]  INFO -- : [Session]			toto disconnected
-I, [2012-03-26T13:52:24.379985 #3161]  INFO -- : [Session]			toto connected
-I, [2012-03-26T13:52:24.400062 #3161]  INFO -- : [Session]			 disconnected
-I, [2012-03-26T13:52:24.407538 #3161]  INFO -- : New application				app1
-I, [2012-03-26T13:52:36.659045 #3167]  INFO -- : Account creation				toto
-I, [2012-03-26T13:52:36.659196 #3167]  INFO -- : [Session]			toto disconnected
-I, [2012-03-26T13:52:36.666602 #3167]  INFO -- : [Session]			toto disconnected
-I, [2012-03-26T13:52:36.702368 #3167]  INFO -- : [Session]			toto connected
-I, [2012-03-26T13:52:36.722757 #3167]  INFO -- : [Session]			 disconnected
-I, [2012-03-26T13:52:36.730623 #3167]  INFO -- : New application				app1
-I, [2012-03-26T13:53:36.748497 #3173]  INFO -- : Account creation				toto
-I, [2012-03-26T13:53:36.748651 #3173]  INFO -- : [Session]			toto disconnected
-I, [2012-03-26T13:53:36.756066 #3173]  INFO -- : [Session]			toto disconnected
-I, [2012-03-26T13:53:36.790740 #3173]  INFO -- : [Session]			toto connected
-I, [2012-03-26T13:53:36.810859 #3173]  INFO -- : [Session]			 disconnected
-I, [2012-03-26T13:53:36.818381 #3173]  INFO -- : New application				app1
-I, [2012-03-26T13:53:54.168286 #3175]  INFO -- : Account creation				toto
-I, [2012-03-26T13:53:54.168528 #3175]  INFO -- : [Session]			toto disconnected
-I, [2012-03-26T13:53:54.185628 #3175]  INFO -- : [Session]			toto disconnected
-I, [2012-03-26T13:53:54.207590 #3175]  INFO -- : [Session]			toto connected
-I, [2012-03-26T13:53:54.214934 #3175]  INFO -- : [Session]			 disconnected
-I, [2012-03-26T13:53:54.241648 #3175]  INFO -- : New application				app1
+# Logfile created on 2012-05-06 14:30:14 +0200 by logger.rb/31641
+I, [2012-05-06T14:30:14.439506 #2410]  INFO -- : [Session]			root connected
+I, [2012-05-06T14:30:31.808310 #2410]  INFO -- : [Session]			root disconnected
+I, [2012-05-06T14:33:49.117905 #2410]  INFO -- : [Session]			root connected
+I, [2012-05-06T14:34:36.407610 #2410]  INFO -- : Use deleted				(root, blog)
+I, [2012-05-06T14:34:37.869979 #2410]  INFO -- : [Session]			root disconnected
+I, [2012-05-06T14:35:38.743322 #2410]  INFO -- : [Session]			root connected
+I, [2012-05-06T14:35:38.905684 #2410]  INFO -- : New use				(root, blog)
+I, [2012-05-06T14:36:06.364130 #2410]  INFO -- : [Session]			root connected
+I, [2012-05-08T16:00:18.624868 #2288]  INFO -- : [Session]			root connected
+I, [2012-05-08T17:19:20.903328 #10619]  INFO -- : [Session]			root connected
+I, [2012-05-08T17:27:06.517805 #10619]  INFO -- : Use deleted				(root, blog)
+I, [2012-05-08T17:27:07.350123 #10619]  INFO -- : [Session]			root disconnected
+I, [2012-05-08T17:27:13.752364 #10619]  INFO -- : [Session]			root connected
+I, [2012-05-08T17:27:13.805084 #10619]  INFO -- : New use				(root, blog)
+I, [2012-05-08T18:12:09.284124 #10619]  INFO -- : [Session]			root connected
+I, [2012-05-08T18:52:17.319335 #12554]  INFO -- : [Session]			root connected
+I, [2012-05-09T18:49:41.754122 #2704]  INFO -- : [Session]			root connected
+I, [2012-05-10T20:47:30.802219 #2784]  INFO -- : [Session]			root connected
+I, [2012-05-10T20:56:12.942716 #2784]  INFO -- : [Session]			root disconnected
+I, [2012-05-10T20:56:22.589159 #2784]  INFO -- : Account creation				user
+I, [2012-05-10T20:56:22.589455 #2784]  INFO -- : [Session]			user disconnected
+I, [2012-05-10T20:56:25.725838 #2784]  INFO -- : [Session]			user disconnected
+I, [2012-05-10T20:56:33.817296 #2784]  INFO -- : [Session]			user connected
+I, [2012-05-10T20:56:33.852662 #2784]  INFO -- : New use				(user, blog)
+I, [2012-05-10T20:56:46.878091 #2784]  INFO -- : [Session]			user disconnected
+I, [2012-05-10T20:56:49.744163 #2784]  INFO -- : [Session]			root connected
+I, [2012-05-10T21:22:27.077492 #2784]  INFO -- : [Session]			 disconnected
+I, [2012-05-10T21:22:33.026526 #2784]  INFO -- : [Session]			user connected
+I, [2012-05-10T21:23:30.054965 #2784]  INFO -- : [Session]			user disconnected
+I, [2012-05-10T21:23:38.240988 #2784]  INFO -- : [Session]			root connected
+I, [2012-05-10T21:52:36.377562 #3840]  INFO -- : [Session]			user connected
+I, [2012-05-11T17:23:07.767675 #2152]  INFO -- : [Session]			user connected
+I, [2012-05-11T17:23:18.396751 #2152]  INFO -- : [Session]			user disconnected
+I, [2012-05-11T17:23:23.572799 #2152]  INFO -- : [Session]			root connected
+I, [2012-05-11T17:23:29.660817 #2152]  INFO -- : [Session]			root disconnected
+I, [2012-05-11T18:10:23.373071 #2152]  INFO -- : [Session]			user connected
+I, [2012-05-11T19:04:24.017862 #2152]  INFO -- : [Session]			root connected
+I, [2012-05-11T19:05:59.656292 #2152]  INFO -- : [Session]			root disconnected
+I, [2012-05-11T19:06:10.690729 #2152]  INFO -- : [Session]			user connected
